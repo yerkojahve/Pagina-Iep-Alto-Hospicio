@@ -1,0 +1,128 @@
+/* ========================
+   SECCIONES: ALTERNADO
+======================== */
+
+/* Alterna fondos automáticamente para los <section> dentro de .striped */
+.striped > section {
+  padding-block: 3rem;            /* espaciado vertical consistente */
+}
+
+.striped > section:nth-of-type(odd) {
+  background-color: #ffffff;      /* fondo blanco */
+}
+
+.striped > section:nth-of-type(even) {
+  background-color: #f6f8fb;      /* fondo gris muy suave */
+}
+
+/* Si quieres que una sección NO participe del alternado (p.ej. una que ya
+   trae su propio fondo como "bg-schedule"), usa la clase .no-alt en el <section>. */
+.striped > section.no-alt {
+  background: transparent;        /* no fuerza color */
+  padding: 0;                     /* esta sección maneja su propio padding */
+}
+
+/* Contenedor interno opcional para mantener el padding incluso si .no-alt lo quita */
+.section-inner {
+  padding-block: 3rem;
+}
+
+/* ========================
+   PALETAS MANUALES
+   (por si quieres forzar colores específicos)
+======================== */
+.section-light { background-color: #f9fafb; padding-block: 3rem; }
+.section-white { background-color: #ffffff; padding-block: 3rem; }
+.section-blue  { background: linear-gradient(180deg, #eaf0fa, #ffffff); padding-block: 3rem; }
+.section-gray  { background-color: #f1f5f9; padding-block: 3rem; }
+
+/* Título de sección */
+.section-title {
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+  color: #0f2b5b;
+}
+
+/* Secciones con fondos alternos */
+.section-alt {
+  background: var(--brand-bg);
+  padding-block: 4rem;
+}
+
+.section-blue {
+  background: var(--brand-blue);
+  color: #fff;
+  padding-block: 4rem;
+}
+
+.section-blue .section-title {
+  color: #fff;
+}
+
+.section-blue .text-muted-2 {
+  color: rgba(255,255,255,.75);
+}
+
+/* Tabs de programa */
+#programa .nav-pills .nav-link {
+  border-radius: 50px;
+  padding: 0.5rem 1.25rem;
+  font-weight: 600;
+  color: var(--brand-blue);
+  background: #fff;
+  border: 1px solid var(--brand-blue);
+  transition: all .2s ease;
+}
+#programa .nav-pills .nav-link.active {
+  background: var(--brand-gold);
+  color: #fff;
+  border-color: var(--brand-gold);
+}
+
+/* Cards dentro del programa */
+#programa .card {
+  border-radius: var(--radius-lg);
+  border: 1px solid rgba(0,0,0,.08);
+  box-shadow: var(--shadow-soft);
+}
+
+/* Sección azul para Programa */
+.section-blue {
+  background: var(--brand-blue);
+  color: #fff;
+  padding-block: 4rem;
+}
+
+.section-blue .section-title {
+  color: #fff;
+}
+
+.section-blue .text-muted-2 {
+  color: rgba(255,255,255,.8);
+}
+
+/* Nav Pills estilizadas */
+#programa .nav-pills .nav-link {
+  border-radius: 50px;
+  padding: 0.5rem 1.25rem;
+  font-weight: 600;
+  color: var(--brand-blue);
+  background: #fff;
+  border: 1px solid transparent;
+  transition: all .2s ease;
+}
+#programa .nav-pills .nav-link:hover {
+  border-color: var(--brand-gold);
+  color: var(--brand-gold);
+}
+#programa .nav-pills .nav-link.active {
+  background: var(--brand-gold);
+  color: #fff;
+}
+
+/* Card interna */
+#programa .card {
+  border-radius: var(--radius-lg);
+  border: none;
+  box-shadow: var(--shadow-soft);
+}

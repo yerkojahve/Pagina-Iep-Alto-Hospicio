@@ -1,0 +1,73 @@
+/* Namespacing para evitar choques globales */
+.ahj-dashboard body, .ahj-dashboard {
+  background-color: #f5f7fa;
+  color: #000;
+}
+
+/* Sidebar */
+.ahj-dashboard .ahj-sidebar {
+  min-height: 100vh;
+  background: #1e3a8a;
+  color: #fff;
+}
+.ahj-dashboard .ahj-sidebar a {
+  color: #fff;
+  text-decoration: none;
+  display: block;
+  padding: 10px;
+  border-radius: 6px;
+}
+.ahj-dashboard .ahj-sidebar a:hover {
+  background: #3b82f6;
+}
+.ahj-dashboard .ahj-sidebar h4 {
+  margin: 20px 0;
+}
+
+/* Content */
+.ahj-dashboard .ahj-content {
+  padding: 20px;
+}
+
+/* Verse */
+.ahj-dashboard .ahj-verse {
+  font-size: .9rem;
+  font-style: italic;
+  color: #e0e7ff;
+  margin-top: 20px;
+}
+
+/* Cards y KPIs */
+.ahj-dashboard .card {
+  border-radius: 15px;
+}
+.ahj-dashboard .ahj-kpi-card {
+  background: #ffffff;
+  color: #000;
+  border: 1px solid rgba(0,0,0,.06);
+}
+.ahj-dashboard .ahj-kpi-title {
+  font-size: .9rem;
+  color: #000;
+}
+.ahj-dashboard .ahj-kpi-value {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #000;
+}
+
+/* Utilidades */
+.ahj-dashboard .ahj-small-muted {
+  color: #6c757d;
+}
+.ahj-dashboard .progress {
+  height: 8px;
+}
+
+/* Tablas (solo dentro del dashboard) */
+.ahj-dashboard table thead.table-dark th {
+  color: #fff;
+}
+.ahj-dashboard table thead.table-light th {
+  color: #000;
+}
