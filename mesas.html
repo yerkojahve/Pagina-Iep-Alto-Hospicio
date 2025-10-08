@@ -1,0 +1,709 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+  <title>Mesas — IEP Alto Hospicio</title>
+
+  <!-- CSS base -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"/>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet"/>
+  
+  <!-- Estilos propios -->
+  <style>
+    :root{
+      --primary:#2c3e50; --secondary:#3498db; --accent:#e74c3c;
+      --success:#2ecc71; --warning:#f39c12; --neutral:#95a5a6;
+      --light:#ecf0f1; --dark:#34495e; --shadow:0 10px 20px rgba(0,0,0,.1);
+      --transition:all .25s ease;
+    }
+    body{ background:#f5f7fb; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+    
+    /* Sidebar */
+    .ahj-sidebar{ background:var(--primary); color:#fff; min-height:100vh; }
+    .ahj-sidebar h4{ color:#fff; margin-bottom:1.5rem; }
+    .ahj-sidebar nav a{ color:rgba(255,255,255,.8); text-decoration:none; padding:.75rem 1rem; border-radius:.5rem; transition:var(--transition); }
+    .ahj-sidebar nav a:hover{ background:rgba(255,255,255,.1); color:#fff; }
+    .ahj-sidebar nav a.active{ background:var(--secondary); color:#fff; }
+    .ahj-verse{ font-style:italic; color:rgba(255,255,255,.7); font-size:.9rem; }
+    
+    /* Contenido principal */
+    .ahj-content{ padding:1.5rem; }
+    
+    /* Botones de piso */
+    .floor-btn{ padding:.6rem 1rem; border:0; border-radius:999px; background:#fff; box-shadow:var(--shadow); font-weight:600; transition:var(--transition); }
+    .floor-btn:hover{ background:#f0f0f0; }
+    .floor-btn.active{ background:var(--primary); color:#fff; }
+    
+    /* Grid de mesas */
+    .tables-grid{ display:grid; grid-template-columns: repeat(auto-fill, minmax(150px,1fr)); gap:25px; }
+    
+    /* Tarjetas de mesa */
+    .table-card{ 
+      width:150px; 
+      height:180px; 
+      background:#fff; 
+      border-radius:12px; 
+      box-shadow:var(--shadow); 
+      cursor:pointer; 
+      transition:var(--transition); 
+      position:relative;
+      overflow:hidden;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      padding:15px 10px;
+    }
+    .table-card:hover{ transform:translateY(-5px); box-shadow:0 15px 25px rgba(0,0,0,.15); }
+    
+    /* Mesa visual */
+    .table-visual{ 
+      width:100px; 
+      height:60px; 
+      border-radius:8px; 
+      display:flex; 
+      align-items:center; 
+      justify-content:center; 
+      font-weight:700; 
+      color:#fff;
+      margin-bottom:10px;
+      position:relative;
+    }
+    
+    /* Sillas alrededor de la mesa */
+    .chairs-container {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 5px;
+      width: 100%;
+      margin-top: 5px;
+    }
+    
+    .chair {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: #ddd;
+      margin: 0 auto;
+      position: relative;
+    }
+    
+    .chair.occupied {
+      background: var(--accent);
+    }
+    
+    .chair.available {
+      background: var(--success);
+    }
+    
+    .table-id {
+      font-weight: bold;
+      margin-top: 8px;
+      font-size: 1.1rem;
+    }
+    
+    .table-status {
+      font-size: 0.75rem;
+      padding: 3px 8px;
+      border-radius: 12px;
+      margin-top: 5px;
+    }
+    
+    /* Estados de mesa */
+    .table-available .table-visual{ background:var(--success); }
+    .table-occupied .table-visual{ background:var(--accent); }
+    .table-reserved .table-visual{ background:var(--warning); }
+    .table-out-of-service .table-visual{ background:var(--neutral); }
+    
+    /* KPIs */
+    .ahj-kpi-card{ border:none; border-radius:12px; box-shadow:var(--shadow); transition:var(--transition); }
+    .ahj-kpi-card:hover{ transform:translateY(-3px); }
+    .ahj-kpi-title{ font-size:.85rem; color:var(--neutral); font-weight:600; }
+    .ahj-kpi-value{ font-size:1.8rem; font-weight:700; color:var(--primary); margin-top:.5rem; }
+    
+    /* Overlay y modal */
+    .overlay{ position:fixed; inset:0; background:rgba(0,0,0,.45); opacity:0; pointer-events:none; transition:var(--transition); z-index:1040; }
+    .overlay.active{ opacity:1; pointer-events:auto; }
+    
+    .table-details{ 
+      position:fixed; 
+      top:50%; 
+      left:50%; 
+      transform:translate(-50%,-50%) scale(.9); 
+      width:95%; 
+      max-width:500px; 
+      background:#fff; 
+      border-radius:16px; 
+      padding:24px; 
+      box-shadow:0 15px 30px rgba(0,0,0,.2); 
+      opacity:0; 
+      transition:var(--transition); 
+      z-index:1050; 
+    }
+    .table-details.active{ opacity:1; transform:translate(-50%,-50%) scale(1); }
+    
+    .detail-header {
+      display: flex;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+    
+    .detail-table-visual {
+      width: 80px;
+      height: 50px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      color: white;
+      margin-right: 15px;
+    }
+    
+    .detail-info {
+      flex: 1;
+    }
+    
+    .detail-title {
+      font-size: 1.5rem;
+      margin-bottom: 5px;
+    }
+    
+    .detail-status {
+      font-size: 0.8rem;
+      padding: 4px 10px;
+      border-radius: 12px;
+      display: inline-block;
+    }
+    
+    .detail-meta {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 15px;
+      margin-top: 20px;
+    }
+    
+    .meta-item {
+      text-align: center;
+      padding: 10px;
+      border-radius: 8px;
+      background: #f8f9fa;
+    }
+    
+    .meta-value {
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: var(--primary);
+    }
+    
+    .meta-label {
+      font-size: 0.8rem;
+      color: var(--neutral);
+      margin-top: 5px;
+    }
+    
+    .detail-chairs {
+      margin-top: 20px;
+    }
+    
+    .chairs-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+      margin-top: 10px;
+    }
+    
+    .chair-detail {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.8rem;
+      position: relative;
+    }
+    
+    .chair-number {
+      position: absolute;
+      top: -5px;
+      right: -5px;
+      background: var(--primary);
+      color: white;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      font-size: 0.7rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    /* Sillas con iniciales en la tarjeta */
+    .chair {
+      width: 24px; height: 24px; border-radius: 50%;
+      display:flex; align-items:center; justify-content:center;
+      color:#fff; font-size:.7rem; font-weight:700;
+      box-shadow: 0 1px 2px rgba(0,0,0,.15);
+    }
+    .chair.empty{
+      background:#e9eef4; color:#74829b; font-weight:800;
+    }
+    .chair.joven{ background:#0d6efd; }  /* azul bs-primary */
+    .chair.jefe{ background:#6f42c1; }   /* bs-purple */
+    .chair.otros{ background:#20c997; }  /* teal */
+
+    /* Sillas del modal con nombre debajo */
+    .chair-detail {
+      width: 48px; height: 48px; border-radius:50%;
+      display:flex; align-items:center; justify-content:center;
+      color:#fff; font-weight:800; font-size:.9rem;
+      box-shadow: 0 1px 3px rgba(0,0,0,.2);
+      margin:0 auto 6px;
+    }
+    .chair-detail.empty{
+      background:#e9eef4; color:#74829b;
+    }
+    .chair-detail.joven{ background:#0d6efd; }
+    .chair-detail.jefe{ background:#6f42c1; }
+    .chair-detail.otros{ background:#20c997; }
+
+    .seat-name {
+      font-size:.75rem; color:#5a677d; text-align:center; line-height:1.1;
+      white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+    }
+    /* MODAL + tamaños */
+    .table-details{
+      position:fixed; top:50%; left:50%;
+      transform:translate(-50%,-50%) scale(.9);
+      width:95%; max-width: 920px;         /* << antes 500px */
+      background:#fff; border-radius:16px; padding:28px;
+      box-shadow:0 15px 30px rgba(0,0,0,.2); opacity:0;
+      transition:all .25s ease; z-index:1050;
+    }
+    .table-details.active{ opacity:1; transform:translate(-50%,-50%) scale(1); }
+
+    .detail-header{ display:flex; align-items:center; margin-bottom:22px; }
+    .detail-table-visual{
+      width: 120px; height: 70px;          /* << más grande */
+      border-radius: 10px; display:flex; align-items:center; justify-content:center;
+      font-weight:800; color:#fff; margin-right:18px; font-size:1.2rem;
+    }
+
+    /* KPIs del modal un poquito más “aireados” */
+    .detail-meta{ display:grid; grid-template-columns: repeat(4, 1fr); gap:16px; margin-top:18px; }
+    .meta-item{ text-align:center; padding:14px; border-radius:10px; background:#f8f9fa; }
+    .meta-value{ font-size:1.6rem; font-weight:800; color:var(--primary); }
+
+    /* Grid de sillas más ancho en desktop */
+    .chairs-grid{
+      display:grid;
+      grid-template-columns: repeat(6, 1fr);  /* << 6 por fila en pantallas grandes */
+      gap:12px; margin-top:12px;
+    }
+    @media (max-width: 992px){
+      .chairs-grid{ grid-template-columns: repeat(4, 1fr); }
+    }
+    @media (max-width: 576px){
+      .chairs-grid{ grid-template-columns: repeat(3, 1fr); }
+    }
+
+    /* Sillas del modal un poco más grandes */
+    .chair-detail{
+      width:56px; height:56px; border-radius:50%;
+      display:flex; align-items:center; justify-content:center;
+      color:#fff; font-weight:800; font-size:1rem;
+      box-shadow:0 1px 3px rgba(0,0,0,.2); margin:0 auto 6px;
+    }
+    .chair-number{
+      position:absolute; top:-6px; right:-6px;
+      background:var(--primary); color:#fff; width:20px; height:20px;
+      border-radius:50%; font-size:.7rem; display:flex; align-items:center; justify-content:center;
+    }
+
+    /* Colores para estados del “bloque mesa” del modal */
+    .detail-table-visual.table-available{ background:var(--success); }
+    .detail-table-visual.table-occupied{ background:var(--accent); }
+    .detail-table-visual.table-reserved{ background:var(--warning); color:#222; }
+    .detail-table-visual.table-out-of-service{ background:var(--neutral); }
+  </style>
+</head>
+<body>
+  <div class="ahj-dashboard">
+    <div class="container-fluid">
+      <div class="row">
+        <!-- Sidebar -->
+        <aside class="col-md-3 col-lg-2 ahj-sidebar p-3">
+          <h4 class="text-center"><i class="fa-solid fa-cross"></i> Admin IEP</h4>
+          <nav class="d-grid gap-1">
+            <a href="https://iepaltohospicio.site/Dashboard.html"><i class="fa-solid fa-house"></i> Panel Principal</a>
+            <a href="https://iepaltohospicio.site/Dashboard.html"><i class="fa-solid fa-users"></i> Visitantes</a>
+            <a href="https://iepaltohospicio.site/Dashboard.html"><i class="fa-solid fa-house-chimney"></i> Hospedajes</a>
+            <a href="https://iepaltohospicio.site/Dashboard.html"><i class="fa-solid fa-church"></i> Iglesias</a>
+            <a href="https://iepaltohospicio.site/Dashboard.html"><i class="fa-solid fa-user-tie"></i> Organizadores</a>
+            <a class="active" href="https://iepaltohospicio.site/mesas.html"><i class="fa-solid fa-table-cells"></i> Mesas</a>
+          </nav>
+          <div class="ahj-verse mt-5">
+            "Ninguno tenga en poco tu juventud…" <br><small>(1 Timoteo 4:12)</small>
+          </div>
+        </aside>
+
+        <main class="col-md-9 col-lg-10 ahj-content">
+          <header class="mb-4 pb-2 border-bottom d-flex align-items-center justify-content-between">
+            <h2 class="mb-0">Mesas</h2>
+            <small class="text-muted">Fuente: dashboard.json</small>
+          </header>
+
+          <!-- Selector de piso -->
+          <div class="d-flex gap-2 mb-3">
+            <button class="floor-btn active" data-floor="1"><i class="fas fa-layer-group"></i> Piso 1</button>
+            <button class="floor-btn" data-floor="2"><i class="fas fa-layer-group"></i> Piso 2</button>
+          </div>
+
+          <!-- Contenedor de mesas -->
+          <div id="floors-wrap" class="mb-4">
+            <div class="tables-grid" id="tables-container">
+              <!-- Las mesas se generarán dinámicamente aquí -->
+            </div>
+          </div>
+
+          <!-- KPIs -->
+          <div class="row g-3 mb-4">
+            <div class="col-6 col-md-3">
+              <div class="card ahj-kpi-card text-center p-3">
+                <div class="ahj-kpi-title">Total Mesas</div>
+                <div id="kpi_mesas_total" class="ahj-kpi-value">—</div>
+              </div>
+            </div>
+            <div class="col-6 col-md-3">
+              <div class="card ahj-kpi-card text-center p-3">
+                <div class="ahj-kpi-title">Capacidad total</div>
+                <div id="kpi_mesas_cap" class="ahj-kpi-value">—</div>
+              </div>
+            </div>
+            <div class="col-6 col-md-3">
+              <div class="card ahj-kpi-card text-center p-3">
+                <div class="ahj-kpi-title">Ocupación</div>
+                <div id="kpi_mesas_occ" class="ahj-kpi-value">—</div>
+              </div>
+            </div>
+            <div class="col-6 col-md-3">
+              <div class="card ahj-kpi-card text-center p-3">
+                <div class="ahj-kpi-title">Cupos libres</div>
+                <div id="kpi_mesas_free" class="ahj-kpi-value">—</div>
+              </div>
+            </div>
+          </div>
+
+          <footer class="border-top py-4 text-center text-muted small">© 2025 IEP Alto Hospicio.</footer>
+        </main>
+      </div>
+    </div>
+  </div>
+
+  <!-- Overlay + Modal Detalle Mesa -->
+  <div class="overlay" id="overlay"></div>
+  <div class="table-details" id="table-details">
+    <button class="btn-close float-end" id="close-details" aria-label="Cerrar"></button>
+    
+    <div class="detail-header">
+      <div class="detail-table-visual" id="detail-table-visual"></div>
+      <div class="detail-info">
+        <h4 class="detail-title" id="detail-title">Mesa</h4>
+        <span class="detail-status" id="detail-status">Disponible</span>
+      </div>
+    </div>
+    
+    <div class="detail-meta">
+      <div class="meta-item">
+        <div class="meta-value" id="detail-capacity">—</div>
+        <div class="meta-label">Capacidad</div>
+      </div>
+      <div class="meta-item">
+        <div class="meta-value" id="detail-ocupadas">—</div>
+        <div class="meta-label">Ocupadas</div>
+      </div>
+      <div class="meta-item">
+        <div class="meta-value" id="detail-libres">—</div>
+        <div class="meta-label">Libres</div>
+      </div>
+      <div class="meta-item">
+        <div class="meta-value" id="detail-responsable">—</div>
+        <div class="meta-label">Responsable</div>
+      </div>
+    </div>
+    
+    <div class="detail-chairs">
+      <h6>Sillas</h6>
+      <div class="chairs-grid" id="detail-chairs-grid">
+        <!-- Las sillas se generarán dinámicamente aquí -->
+      </div>
+    </div>
+  </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  // =========================
+  // Fetch helpers (nube -> local)
+  // =========================
+  const BUST = String(Date.now());
+  const REMOTE = 'https://iepaltohospicio.site/data/dashboard.json?' + BUST;
+  const LOCAL  = './data/dashboard.json?' + BUST;
+
+  async function fetchDashboard() {
+    for (const url of [REMOTE, LOCAL]) {
+      try { const r = await fetch(url, { cache: 'no-store' }); if (r.ok) return await r.json(); } catch(_) {}
+    }
+    return null;
+  }
+
+  // =========================
+  // Estado / utilidades
+  // =========================
+  const tablesContainer = document.getElementById('tables-container');
+  const floorButtons   = document.querySelectorAll('.floor-btn');
+  const overlay        = document.getElementById('overlay');
+  const tableDetails   = document.getElementById('table-details');
+  const closeDetails   = document.getElementById('close-details');
+
+  let tablesData = [];
+
+  const setText = (id, v) => { const el = document.getElementById(id); if (el) el.textContent = v ?? '—'; };
+
+  function normalizeStatus(s) {
+    const v = (s || '').toString().trim().toLowerCase();
+    if (['available','disponible'].includes(v)) return 'available';
+    if (['occupied','ocupada','completa','llena'].includes(v)) return 'occupied';
+    if (['reserved','reservada'].includes(v)) return 'reserved';
+    if (['out-of-service','no disponible','fuera de servicio'].includes(v)) return 'out-of-service';
+    return 'available';
+  }
+  function getStatusText(status) {
+    switch (normalizeStatus(status)) {
+      case 'available': return 'Disponible';
+      case 'occupied' : return 'Ocupada';
+      case 'reserved' : return 'Reservada';
+      case 'out-of-service': return 'No disponible';
+      default: return 'Desconocido';
+    }
+  }
+  function getStatusClass(status) {
+    switch (normalizeStatus(status)) {
+      case 'available': return 'bg-success text-white';
+      case 'occupied' : return 'bg-danger text-white';
+      case 'reserved' : return 'bg-warning text-dark';
+      case 'out-of-service': return 'bg-secondary text-white';
+      default: return 'bg-light text-dark';
+    }
+  }
+  function initialsFrom(name = '') {
+    const parts = name.trim().split(/\s+/).filter(Boolean);
+    if (!parts.length) return '—';
+    return (parts[0][0] + (parts[1]?.[0] ?? '')).toUpperCase();
+  }
+
+  // =========================
+  // KPIs
+  // =========================
+  function updateKPIs(list) {
+    const totalMesas      = list.length;
+    const capacidadTotal  = list.reduce((s,t)=>s+(Number(t.capacity)||0),0);
+    const ocupacionTotal  = list.reduce((s,t)=>s+(Number(t.occupied)||0),0);
+    const cuposLibres     = Math.max(capacidadTotal-ocupacionTotal,0);
+    setText('kpi_mesas_total', totalMesas);
+    setText('kpi_mesas_cap'  , capacidadTotal);
+    setText('kpi_mesas_occ'  , ocupacionTotal);
+    setText('kpi_mesas_free' , cuposLibres);
+  }
+
+  // =========================
+  // Tarjetas (grilla)
+  // =========================
+  function createTableCard(table) {
+    const card = document.createElement('div');
+    card.className = `table-card table-${normalizeStatus(table.status)}`;
+    card.setAttribute('data-id', table.id);
+
+    const tableVisual = document.createElement('div');
+    tableVisual.className = 'table-visual';
+    tableVisual.textContent = table.name || table.id;         // << Nombre visible
+
+    const chairsContainer = document.createElement('div');
+    chairsContainer.className = 'chairs-container';
+
+    const cap = Number(table.capacity) || 0;
+    const occ = Number(table.occupied) || 0;
+    for (let i=0;i<cap;i++){
+      const chair = document.createElement('div');
+      chair.className = `chair ${i<occ ? 'occupied':'available'}`;
+      chairsContainer.appendChild(chair);
+    }
+
+    const tableId = document.createElement('div');
+    tableId.className = 'table-id';
+    tableId.textContent = table.id;                           // << ID como subtítulo
+
+    const tableStatus = document.createElement('div');
+    tableStatus.className = 'table-status ' + getStatusClass(table.status);
+    tableStatus.textContent = getStatusText(table.status);
+
+    card.appendChild(tableVisual);
+    card.appendChild(chairsContainer);
+    card.appendChild(tableId);
+    card.appendChild(tableStatus);
+    card.addEventListener('click', ()=>openTableDetails(table));
+    return card;
+  }
+
+  function loadTables(floor) {
+    tablesContainer.innerHTML = '';
+    tablesData
+      .filter(t => String(t.floor) === String(floor))
+      .forEach(t => tablesContainer.appendChild(createTableCard(t)));
+  }
+
+  // =========================
+  // Modal (con nombres por silla)
+  // =========================
+  function openTableDetails(table) {
+    // Título usa nombre + ID
+    const titleEl = document.getElementById('detail-title');
+    titleEl.textContent = table.name ? `Mesa ${table.name} (ID ${table.id})` : `Mesa ${table.id}`;
+
+    const tableVisual = document.getElementById('detail-table-visual');
+    tableVisual.textContent = table.name || table.id;
+    tableVisual.className = `detail-table-visual table-${normalizeStatus(table.status)}`;
+
+    const statusElement = document.getElementById('detail-status');
+    statusElement.textContent = getStatusText(table.status);
+    statusElement.className = `detail-status ${getStatusClass(table.status)}`;
+
+    const cap = Number(table.capacity)||0;
+    const occ = Number(table.occupied)||0;
+    setText('detail-capacity', cap);
+    setText('detail-ocupadas', occ);
+    setText('detail-libres'  , Math.max(cap-occ,0));
+    setText('detail-responsable', table.responsible || table.responsable || 'Sin asignar');
+
+    // personas desde JSON
+    const rawList =
+      Array.isArray(table.personas) ? table.personas :
+      Array.isArray(table.miembros) ? table.miembros :
+      Array.isArray(table.integrantes) ? table.integrantes : [];
+
+    const people = rawList.map(p => {
+      if (typeof p === 'string') return { nombre:p };
+      if (p && typeof p === 'object') return {
+        nombre : p.nombre ?? p.name ?? '',
+        tipo   : p.tipo ?? p.rol ?? '',
+        cargo  : p.cargo ?? '',
+        iglesia: p.iglesia ?? p.church ?? ''
+      };
+      return { nombre:'' };
+    });
+
+    const totalSeats = Math.max(cap, people.length, occ);
+    const grid = document.getElementById('detail-chairs-grid');
+    grid.innerHTML = '';
+
+    for (let i=0;i<totalSeats;i++){
+      const persona  = people[i] || null;
+      const hasName  = !!(persona && (persona.nombre||'').trim());
+      const occupied = hasName || i<occ;
+
+      let colorClass = 'otros';
+      if (!occupied) colorClass = 'empty';
+      else if (persona?.tipo === 'joven') colorClass = 'joven';
+      else if (persona?.tipo === 'jefe')  colorClass = 'jefe';
+
+      const label    = hasName ? persona.nombre.trim() : (occupied ? 'Ocupado' : 'Libre');
+      const initials = hasName ? initialsFrom(persona.nombre) : '—';
+
+      const wrap  = document.createElement('div');
+      wrap.className = 'text-center';
+      wrap.style.width = '72px';
+
+      const chair = document.createElement('div');
+      chair.className = `chair-detail ${colorClass}`;
+      chair.title = label;
+
+      const num = document.createElement('div');
+      num.className = 'chair-number';
+      num.textContent = i+1;
+
+      chair.appendChild(document.createTextNode(initials));
+      chair.appendChild(num);
+
+      const nameEl = document.createElement('div');
+      nameEl.className = 'seat-name';
+      nameEl.title = label;
+      nameEl.textContent = label;
+
+      wrap.appendChild(chair);
+      wrap.appendChild(nameEl);
+      grid.appendChild(wrap);
+    }
+
+    overlay.classList.add('active');
+    tableDetails.classList.add('active');
+  }
+
+  function closeModal(){ overlay.classList.remove('active'); tableDetails.classList.remove('active'); }
+
+  // =========================
+  // Boot
+  // =========================
+  closeDetails.addEventListener('click', closeModal);
+  overlay.addEventListener('click', closeModal);
+
+  floorButtons.forEach(btn=>{
+    btn.addEventListener('click', function(){
+      const floor = this.getAttribute('data-floor');
+      floorButtons.forEach(b=>b.classList.remove('active'));
+      this.classList.add('active');
+      loadTables(parseInt(floor,10));
+    });
+  });
+
+  (async () => {
+    const dash  = await fetchDashboard();
+    const mesas = Array.isArray(dash?.mesas) ? dash.mesas : [];
+
+    // Mapeo dashboard.json -> tablesData
+    tablesData = mesas.map(m => {
+      const cap = Number(m.capacidad ?? 0);
+      const occ = Number(m.ocupados  ?? 0);
+      const status =
+        m.status ??
+        (typeof m.estado === 'string'
+          ? (m.estado.toLowerCase()==='completa' ? 'occupied' : 'available')
+          : 'available');
+
+      const personas = Array.isArray(m.miembros)
+        ? m.miembros.map(x => (typeof x === 'string' ? x : (x?.nombre || ''))).filter(Boolean)
+        : [];
+
+      return {
+        id   : /^M\d+$/i.test(String(m.id)) ? String(m.id) : ('M' + String(m.id).padStart(2,'0')),
+        name : (m.mesa || '').toString().trim(),          // << NOMBRE DE LA MESA
+        floor: Number(m.piso ?? 1),
+        capacity : cap,
+        occupied : occ,
+        status   : status,
+        responsible: m.responsable || '',
+        area  : m.area || '',
+        personas,
+        miembros: Array.isArray(m.miembros) ? m.miembros : []
+      };
+    });
+
+    updateKPIs(tablesData);
+    const initialFloor = 1;
+    floorButtons.forEach(b=>b.classList.toggle('active', String(b.dataset.floor)===String(initialFloor)));
+    loadTables(initialFloor);
+  })();
+});
+</script>
+
+
+</body>
+</html>

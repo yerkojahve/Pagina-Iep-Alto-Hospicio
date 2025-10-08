@@ -1,0 +1,33 @@
+/* ========================
+   GALERÍA
+======================== */
+:root {
+  --brand-blue: #0f2b5b;
+  --brand-bg: #f8fafc;
+  --radius-lg: 1rem;
+  --shadow-soft: 0 10px 22px rgba(0,0,0,.08), 0 4px 10px rgba(0,0,0,.06);
+}
+
+/* Hero de la galería */
+.hero-sm {
+  background: linear-gradient(180deg, var(--brand-blue), #162b52 70%);
+}
+
+/* Ítems de galería */
+.gallery-item { display: block; position: relative; }
+.gallery-item img {
+  transition: transform .25s ease, box-shadow .25s ease;
+}
+.gallery-item:hover img {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-soft);
+}
+
+/* Ajustes visuales */
+.object-fit-contain { object-fit: contain; }
+.shadow-soft { box-shadow: var(--shadow-soft); }
+.text-brand { color: var(--brand-blue); }
+.text-muted-2 { color: #6b7280; }
+
+/* Espaciado secciones */
+.section { padding-block: 3rem; }

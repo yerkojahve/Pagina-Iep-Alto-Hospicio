@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Selector de Días con Detalles</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --brand-blue: #0f2b5b;
+            --brand-blue-light: #1a3a72;
+            --brand-bg: #f8fafc;
+            --brand-gold: #d6a01d;
+            --brand-gold-light: #e4b84d;
+            --radius-lg: 1rem;
+            --radius-sm: 0.5rem;
+            --shadow-soft: 0 10px 22px rgba(0,0,0,.08), 0 4px 10px rgba(0,0,0,.06);
+            --shadow-hover: 0 14px 28px rgba(0,0,0,.12), 0 10px 10px rgba(0,0,0,.06);
+            --max-poster: 780px;
+            --transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #f0f5ff 0%, #e6eeff 100%);
+            color: var(--brand-blue);
+            padding: 2rem 1rem;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .container {
+            max-width: var(--max-poster);
+            width: 100%;
+            background: white;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-soft);
+            overflow: hidden;
+            transition: var(--transition);
+        }
+
+        .container:hover {
+            box-shadow: var(--shadow-hover);
+            transform: translateY(-5px);
+        }
+
+        header {
+            background: linear-gradient(120deg, var(--brand-blue) 0%, var(--brand-blue-light) 100%);
+            color: white;
+            padding: 2rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle at center, rgba(255,255,255,0.1) 0%, transparent 60%);
+            transform: rotate(30deg);
+        }
+
+        h1 {
+            font-size: 2.2rem;
+            margin-bottom: 0.5rem;
+            position: relative;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .subtitle {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            position: relative;
+            font-weight: 300;
+        }
+
+        .calendar-icon {
+            position: absolute;
+            top: 1.5rem;
+            right: 1.5rem;
+            font-size: 2.5rem;
+            opacity: 0.2;
+        }
+
+        .days-container {
+            display: flex;
+            justify-content: center;
+            padding: 2rem;
+            gap: 1.2rem;
+            border-bottom: 1px solid rgba(15, 43, 91, 0.1);
+            background: var(--brand-bg);
+        }
+
+        .day-button {
+            padding: 1rem 1.8rem;
+            background: white;
+            border: 2px solid var(--brand-blue);
+            border-radius: var(--radius-lg);
+            color: var(--brand-blue);
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+            box-shadow: var(--shadow-soft);
+        }
+
+        .day-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(120deg, var(--brand-blue) 0%, var(--brand-blue-light) 100%);
+            opacity: 0;
+            transform: translateY(100%);
+            transition: var(--transition);
+            z-index: -1;
+        }
+
+        .day-button:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-hover);
+            color: white;
+            border-color: var(--brand-blue-light);
+        }
+
+        .day-button:hover::before {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .day-button.active {
+            background: var(--brand-blue);
+            color: white;
+            border-color: var(--brand-blue);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(15, 43, 91, 0.2);
+        }
+
+        .day-button.active::before {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .details-container {
+            padding: 2rem;
+            background: white;
+            min-height: 400px;
+            position: relative;
+        }
+
+        .day-title {
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+            color: var(--brand-blue);
+            text-align: center;
+            position: relative;
+            padding-bottom: 0.5rem;
+        }
+
+        .day-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 3px;
+            background: var(--brand-gold);
+            border-radius: 3px;
+        }
+
+        .timeline {
+            opacity: 0;
+            height: 0;
+            overflow: hidden;
+            transition: opacity 0.5s ease, height 0.5s ease;
+        }
+
+        .timeline.active {
+            opacity: 1;
+            height: auto;
+            overflow: visible;
+        }
+
+        .hour-item {
+            display: flex;
+            padding: 1.2rem;
+            border-left: 4px solid var(--brand-gold);
+            margin-bottom: 1.2rem;
+            background: rgba(214, 160, 29, 0.05);
+            border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+            transition: var(--transition);
+            transform: translateX(-10px);
+            opacity: 0;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.03);
+        }
+
+        .timeline.active .hour-item {
+            transform: translateX(0);
+            opacity: 1;
+        }
+
+        .timeline.active .hour-item:nth-child(1) { transition-delay: 0.1s; }
+        .timeline.active .hour-item:nth-child(2) { transition-delay: 0.2s; }
+        .timeline.active .hour-item:nth-child(3) { transition-delay: 0.3s; }
+        .timeline.active .hour-item:nth-child(4) { transition-delay: 0.4s; }
+        .timeline.active .hour-item:nth-child(5) { transition-delay: 0.5s; }
+
+        .hour-item:hover {
+            transform: translateX(5px);
+            background: rgba(214, 160, 29, 0.1);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.08);
+        }
+
+        .hour {
+            font-weight: bold;
+            min-width: 90px;
+            color: var(--brand-gold);
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+        }
+
+        .hour i {
+            margin-right: 0.5rem;
+            font-size: 1.2rem;
+        }
+
+        .event {
+            flex: 1;
+            padding-left: 1rem;
+            border-left: 1px dashed rgba(15, 43, 91, 0.2);
+            display: flex;
+            align-items: center;
+        }
+
+        .event-type {
+            background: var(--brand-gold);
+            color: white;
+            font-size: 0.7rem;
+            padding: 0.2rem 0.6rem;
+            border-radius: 20px;
+            margin-right: 0.8rem;
+            text-transform: uppercase;
+            font-weight: 600;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 1.5rem;
+            background: var(--brand-bg);
+            color: var(--brand-blue);
+            font-size: 0.9rem;
+            border-top: 1px solid rgba(15, 43, 91, 0.1);
+        }
+
+        @media (max-width: 650px) {
+            .days-container {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .day-button {
+                width: 100%;
+                text-align: center;
+            }
+            
+            .hour-item {
+                flex-direction: column;
+            }
+            
+            .hour {
+                margin-bottom: 0.5rem;
+                min-width: auto;
+                justify-content: center;
+            }
+            
+            .event {
+                padding-left: 0;
+                border-left: none;
+                padding-top: 0.5rem;
+                border-top: 1px dashed rgba(15, 43, 91, 0.2);
+                text-align: center;
+                flex-direction: column;
+            }
+            
+            .event-type {
+                margin-right: 0;
+                margin-bottom: 0.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <i class="fas fa-calendar-alt calendar-icon"></i>
+            <h1>Agenda de Eventos</h1>
+            <p class="subtitle">Selecciona un día para ver los detalles por hora</p>
+        </header>
+        
+        <div class="days-container">
+            <button class="day-button active" data-day="30">
+                <i class="far fa-calendar"></i> Octubre 30
+            </button>
+            <button class="day-button" data-day="31">
+                <i class="far fa-calendar"></i> Octubre 31
+            </button>
+            <button class="day-button" data-day="1">
+                <i class="far fa-calendar"></i> Noviembre 1
+            </button>
+        </div>
+        
+        <div class="details-container">
+            <h2 class="day-title">Eventos del 30 de Octubre</h2>
+            
+            <div class="timeline active" id="timeline-30">
+                <div class="hour-item">
+                    <div class="hour"><i class="far fa-clock"></i> 09:00 AM</div>
+                    <div class="event">
+                        <span class="event-type">Reunión</span>
+                        Reunión de planificación del equipo
+                    </div>
+                </div>
+                <div class="hour-item">
+                    <div class="hour"><i class="far fa-clock"></i> 11:00 AM</div>
+                    <div class="event">
+                        <span class="event-type">Presentación</span>
+                        Presentación de nuevos proyectos
+                    </div>
+                </div>
+                <div class="hour-item">
+                    <div class="hour"><i class="far fa-clock"></i> 02:00 PM</div>
+                    <div class="event">
+                        <span class="event-type">Almuerzo</span>
+                        Almuerzo con clientes importantes
+                    </div>
+                </div>
+                <div class="hour-item">
+                    <div class="hour"><i class="far fa-clock"></i> 04:30 PM</div>
+                    <div class="event">
+                        <span class="event-type">Revisión</span>
+                        Revisión de metas trimestrales
+                    </div>
+                </div>
+                <div class="hour-item">
+                    <div class="hour"><i class="far fa-clock"></i> 07:00 PM</div>
+                    <div class="event">
+                        <span class="event-type">Networking</span>
+                        Evento de networking
+                    </div>
+                </div>
+            </div>
+            
+            <div class="timeline" id="timeline-31">
+                <div class="hour-item">
+                    <div class="hour"><i class="far fa-clock"></i> 10:00 AM</div>
+                    <div class="event">
+                        <span class="event-type">Taller</span>
+                        Taller de capacitación técnica
+                    </div>
+                </div>
+                <div class="hour-item">
+                    <div class="hour"><i class="far fa-clock"></i> 12:00 PM</div>
+                    <div class="event">
+                        <span class="event-type">Revisión</span>
+                        Revisión de presupuestos
+                    </div>
+                </div>
+                <div class="hour-item">
+                    <div class="hour"><i class="far fa-clock"></i> 03:00 PM</div>
+                    <div class="event">
+                        <span class="event-type">Creatividad</span>
+                        Sesión de brainstorming creativo
+                    </div>
+                </div>
+                <div class="hour-item">
+                    <div class="hour"><i class="far fa-clock"></i> 06:00 PM</div>
+                    <div class="event">
+                        <span class="event-type">Fiesta</span>
+                        Fiesta de Halloween de la empresa
+                    </div>
+                </div>
+            </div>
+            
+            <div class="timeline" id="timeline-1">
+                <div class="hour-item">
+                    <div class="hour"><i class="far fa-clock"></i> 08:30 AM</div>
+                    <div class="event">
+                        <span class="event-type">Reunión</span>
+                        Reunión de inicio de mes
+                    </div>
+                </div>
+                <div class="hour-item">
+                    <div class="hour"><i class="far fa-clock"></i> 11:00 AM</div>
+                    <div class="event">
+                        <span class="event-type">Presentación</span>
+                        Presentación de resultados de octubre
+                    </div>
+                </div>
+                <div class="hour-item">
+                    <div class="hour"><i class="far fa-clock"></i> 01:00 PM</div>
+                    <div class="event">
+                        <span class="event-type">Almuerzo</span>
+                        Almuerzo de equipo
+                    </div>
+                </div>
+                <div class="hour-item">
+                    <div class="hour"><i class="far fa-clock"></i> 03:30 PM</div>
+                    <div class="event">
+                        <span class="event-type">Planificación</span>
+                        Planificación de objetivos de noviembre
+                    </div>
+                </div>
+                <div class="hour-item">
+                    <div class="hour"><i class="far fa-clock"></i> 05:00 PM</div>
+                    <div class="event">
+                        <span class="event-type">Seguimiento</span>
+                        Cierre de día y seguimiento de tareas
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p>© 2023 Agenda de Eventos - Todos los derechos reservados</p>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const dayButtons = document.querySelectorAll('.day-button');
+            const timelines = document.querySelectorAll('.timeline');
+            const dayTitle = document.querySelector('.day-title');
+            
+            dayButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    // Si ya está activo, no hacer nada
+                    if (this.classList.contains('active')) return;
+                    
+                    // Remover clase active de todos los botones
+                    dayButtons.forEach(btn => btn.classList.remove('active'));
+                    
+                    // Agregar clase active al botón clickeado
+                    this.classList.add('active');
+                    
+                    // Ocultar todas las timelines
+                    timelines.forEach(timeline => timeline.classList.remove('active'));
+                    
+                    // Mostrar la timeline correspondiente
+                    const day = this.getAttribute('data-day');
+                    const selectedTimeline = document.getElementById(`timeline-${day}`);
+                    
+                    // Pequeño retraso para permitir la transición de opacidad
+                    setTimeout(() => {
+                        selectedTimeline.classList.add('active');
+                    }, 300);
+                    
+                    // Actualizar el título con animación
+                    dayTitle.style.opacity = 0;
+                    setTimeout(() => {
+                        if (day === '30' || day === '31') {
+                            dayTitle.textContent = `Eventos del ${day} de Octubre`;
+                        } else {
+                            dayTitle.textContent = `Eventos del ${day} de Noviembre`;
+                        }
+                        dayTitle.style.opacity = 1;
+                    }, 300);
+                });
+            });
+        });
+    </script>
+</body>
+</html>
