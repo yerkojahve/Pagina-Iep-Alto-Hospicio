@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Iglesias - Llegadas y Salidas</title>
+
+<style>
+  :root {
+    --azul-principal: #0f2b5b;
+    --azul-secundario: #1d3d7a;
+    --dorado: #d6a01d;
+    --verde: #28a745;
+    --amarillo: #ffc107;
+    --rojo: #dc3545;
+    --gris: #f4f6fa;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
+
+  body {
+    background-color: var(--gris);
+    color: #333;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+  }
+
+  header {
+    background: linear-gradient(135deg, var(--azul-principal), var(--azul-secundario));
+    color: white;
+    text-align: center;
+    padding: 2rem 1rem;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  }
+
+  header h1 { font-size: 2.2rem; margin-bottom: .5rem; }
+  header p { opacity: 0.9; font-size: 1rem; }
+
+  .container {
+    max-width: 1600px;
+    margin: 2rem auto;
+    padding: 0 20px;
+  }
+
+  .search-box {
+    text-align: center;
+    margin-bottom: 2rem;
+  }
+
+  .search-box input {
+    width: 90%;
+    max-width: 400px;
+    padding: 10px 15px;
+    border: 2px solid #ddd;
+    border-radius: 30px;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+  }
+
+  .search-box input:focus {
+    outline: none;
+    border-color: var(--azul-principal);
+    box-shadow: 0 0 8px rgba(15,43,91,0.3);
+  }
+
+  /* === NUEVO GRID === */
+  .grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 30px;
+    justify-content: center;
+  }
+
+  .card {
+    background: white;
+    border-radius: 14px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    flex: 1 1 calc(25% - 30px); /* 👈 4 columnas en pantallas grandes */
+    max-width: 360px;
+    min-width: 280px;
+    padding: 1.2rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    transition: all 0.3s ease;
+  }
+
+  .card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 18px rgba(0,0,0,0.15);
+  }
+
+  .fecha-badge {
+    background: var(--azul-principal);
+    color: white;
+    border-radius: 50%;
+    width: 65px;
+    height: 65px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-weight: 700;
+    font-size: 0.9rem;
+    flex-shrink: 0;
+    box-shadow: 0 0 8px rgba(0,0,0,0.1);
+  }
+
+  .fecha-badge span {
+    font-size: 0.7rem;
+    opacity: 0.9;
+  }
+
+  .card-content {
+    flex: 1;
+  }
+
+  .card h2 {
+    font-size: 1.1rem;
+    color: var(--azul-principal);
+    margin-bottom: 0.3rem;
+  }
+
+  .estado {
+    font-weight: 600;
+    font-size: 0.85rem;
+    padding: 4px 9px;
+    border-radius: 8px;
+    display: inline-block;
+    margin-bottom: .5rem;
+  }
+
+  .estado.en-camino { background-color: var(--amarillo); color: #212529; }
+  .estado.presente { background-color: var(--verde); color: white; }
+  .estado.salio { background-color: var(--rojo); color: white; }
+
+  .detalles {
+    font-size: 0.85rem;
+    color: #555;
+    line-height: 1.5;
+  }
+
+  .detalles strong { color: var(--azul-principal); }
+
+  .personas {
+    margin-top: 0.3rem;
+    font-weight: 600;
+    color: var(--azul-secundario);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .personas i {
+    font-style: normal;
+    background: var(--azul-principal);
+    color: white;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.8rem;
+  }
+
+  .tiempo {
+    font-size: 0.8rem;
+    color: var(--azul-secundario);
+    margin-top: 0.4rem;
+    font-weight: 600;
+  }
+
+  footer {
+    background: var(--azul-secundario);
+    color: white;
+    text-align: center;
+    padding: 1.2rem 0;
+    font-size: 0.9rem;
+  }
+
+  /* RESPONSIVE */
+  @media (max-width: 1200px) {
+    .card { flex: 1 1 calc(33.3% - 30px); } /* 3 columnas */
+  }
+
+  @media (max-width: 900px) {
+    .card { flex: 1 1 calc(50% - 30px); } /* 2 columnas */
+  }
+
+  @media (max-width: 600px) {
+    .card { flex: 1 1 100%; max-width: 100%; } /* 1 columna */
+  }
+  .card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: .5rem;
+    }
+
+    .card-body {
+    display: flex;
+    flex-direction: column;
+    gap: .4rem;
+    }
+
+    .info-line {
+    display: flex;
+    align-items: flex-start;
+    gap: .5rem;
+    font-size: 0.9rem;
+    color: #444;
+    }
+
+    .info-line .icon {
+    width: 18px;
+    text-align: center;
+    }
+
+    .estado {
+    display: inline-flex;
+    align-items: center;
+    gap: .3rem;
+    padding: 4px 10px;
+    border-radius: 8px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: none;
+    }
+
+    .estado.en-camino { background: #ffda6a; color: #000; }
+    .estado.presente { background: #28a745; color: #fff; }
+    .estado.salio { background: #dc3545; color: #fff; }
+
+    .tiempo {
+    margin-top: 8px;
+    font-weight: 600;
+    color: var(--azul-principal);
+    font-size: 0.9rem;
+    }
+
+</style>
+
+
+</head>
+<body>
+<header>
+  <h1>Iglesias - Llegadas y Salidas</h1>
+  <p>Monitoreo en tiempo real de delegaciones</p>
+</header>
+
+<div class="container">
+  <div class="search-box">
+    <input type="text" id="searchInput" placeholder="🔍 Buscar iglesia por nombre...">
+  </div>
+
+  <div class="grid" id="churchGrid"></div>
+</div>
+
+<footer>
+  © 2025 - Sistema Iglesias Alto Hospicio
+</footer>
+
+<script>
+let iglesias = [];
+let asistentes = [];
+
+// === CARGAR DATOS DEL JSON ===
+async function cargarDatos() {
+  try {
+    const res = await fetch("data/full_dump.json");
+    const data = await res.json();
+    iglesias = data.iglesias || [];
+    asistentes = data.asistentes || [];
+    renderIglesias(iglesias);
+  } catch (e) {
+    document.getElementById("churchGrid").innerHTML =
+      `<p style="color:red;">Error al cargar datos: ${e}</p>`;
+  }
+}
+
+// === CONTAR ASISTENTES POR IGLESIA ===
+function contarAsistentes(iglesiaId) {
+  return asistentes.filter(a => a.iglesia_id === iglesiaId).length;
+}
+
+// === FILTRAR IGLESIAS POR NOMBRE ===
+function filtrar() {
+  const q = document.getElementById("searchInput").value.toLowerCase();
+  renderIglesias(iglesias.filter(i => i.nombre.toLowerCase().includes(q)));
+}
+
+// === FORMATO PARA FECHA EN BADGE ===
+function formatearFecha(fecha) {
+  if (!fecha) return { dia: "--", mes: "" };
+  const f = new Date(fecha);
+  const meses = ["ENE","FEB","MAR","ABR","MAY","JUN","JUL","AGO","SEP","OCT","NOV","DIC"];
+  return {
+    dia: f.getDate().toString().padStart(2,"0"),
+    mes: meses[f.getMonth()]
+  };
+}
+
+// === FORMATO BONITO DE FECHA COMPLETA ===
+function formatearBonito(fecha) {
+  if (!fecha) return "—";
+  const f = new Date(fecha);
+  if (isNaN(f)) return "—";
+
+  const dias = ["Domingo","Lunes","Martes","Miércoles","Jueves","Viernes","Sábado"];
+  const meses = ["Ene","Feb","Mar","Abr","May","Jun","Jul","Ago","Sep","Oct","Nov","Dic"];
+  const dia = f.getDate().toString().padStart(2,"0");
+  const mes = meses[f.getMonth()];
+  const nombreDia = dias[f.getDay()];
+  const hora = f.getHours().toString().padStart(2,"0");
+  const min = f.getMinutes().toString().padStart(2,"0");
+  return `${nombreDia} ${dia} ${mes} — ${hora}:${min} hrs`;
+}
+
+// === CALCULAR TIEMPO RESTANTE / TRANSCURRIDO ===
+function tiempoRestante(fecha) {
+  if (!fecha) return "";
+  const ahora = new Date();
+  const target = new Date(fecha);
+  const diff = target - ahora;
+  const mins = Math.floor(diff / 60000);
+  if (isNaN(mins)) return "";
+  if (mins < -1440) return `Hace ${Math.abs(Math.floor(mins / 1440))} día(s)`;
+  if (mins < -60) return `Hace ${Math.abs(Math.floor(mins / 60))} h`;
+  if (mins < 0) return `Hace ${Math.abs(mins)} min`;
+  if (mins < 60) return `En ${mins} min`;
+  if (mins < 1440) return `En ${Math.floor(mins / 60)} h`;
+  return `En ${Math.floor(mins / 1440)} día(s)`;
+}
+
+// === RENDERIZAR TODAS LAS IGLESIAS ===
+function renderIglesias(lista) {
+  const grid = document.getElementById("churchGrid");
+  grid.innerHTML = "";
+  const ahora = new Date();
+
+  lista.forEach(ig => {
+    const llegada = ig.llegada ? new Date(ig.llegada) : null;
+    const salida = ig.salida ? new Date(ig.salida) : null;
+    const count = contarAsistentes(ig.id);
+    const { dia, mes } = formatearFecha(ig.llegada);
+
+    let estado = "Sin registro", clase = "en-camino", tiempo = "";
+
+    if (llegada && ahora < llegada) {
+      estado = "🟡 En camino";
+      clase = "en-camino";
+      tiempo = `Llega ${tiempoRestante(llegada)}`;
+    } else if (llegada && (!salida || ahora < salida)) {
+      estado = "🟢 Presente";
+      clase = "presente";
+      tiempo = salida ? `Sale ${tiempoRestante(salida)}` : "";
+    } else if (salida && ahora >= salida) {
+      estado = "🔴 Ya salió";
+      clase = "salio";
+      tiempo = `Salió ${tiempoRestante(salida)}`;
+    }
+
+    const card = document.createElement("div");
+    card.className = "card";
+    card.innerHTML = `
+      <div class="fecha-badge">
+        ${dia}
+        <span>${mes}</span>
+      </div>
+      <div class="card-content">
+        <div class="card-header">
+          <h2>${ig.nombre}</h2>
+          <span class="estado ${clase}">${estado}</span>
+        </div>
+
+        <div class="card-body">
+          <div class="personas">
+            <i>👥</i> ${count} persona${count !== 1 ? 's' : ''}
+          </div>
+
+          <div class="info-line">
+            <span class="icon">⏰</span>
+            <span><strong>Llegada:</strong> 
+              <span style="color: var(--azul-secundario);">${formatearBonito(ig.llegada)}</span>
+            </span>
+          </div>
+
+          <div class="info-line">
+            <span class="icon">🕔</span>
+            <span><strong>Salida:</strong> 
+              <span style="color: var(--dorado);">${formatearBonito(ig.salida)}</span>
+            </span>
+          </div>
+
+          <div class="info-line">
+            <span class="icon">📋</span>
+            <span><strong>Notas:</strong> ${ig.notas || "—"}</span>
+          </div>
+
+          <div class="tiempo">${tiempo}</div>
+        </div>
+      </div>
+    `;
+    grid.appendChild(card);
+  });
+}
+
+// === EVENTOS ===
+document.getElementById("searchInput").addEventListener("input", filtrar);
+cargarDatos();
+</script>
+
+</body>
+</html>

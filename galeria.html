@@ -38,99 +38,260 @@
     </div>
   </nav>
 
-  <!-- ENCABEZADO -->
-  <header class="hero hero-sm text-white">
+    <!-- ENCABEZADO -->
+  <header class="hero hero-sm text-white bg-dark position-relative">
     <div class="container py-5 text-center">
-      <h1 class="display-6 fw-bold mb-2">Galería</h1>
-      <p class="mb-0 opacity-90">Momentos que edifican — actividades, cultos y servicio a la comunidad.</p>
+      <h1 class="display-5 fw-bold mb-2">Nuestra galeria</h1>
+      <p class="mb-0 opacity-75 fs-5">"Momentos que edifican nuestra fe y fortalecen nuestra comunión"</p>
     </div>
     <svg class="w-100" viewBox="0 0 1440 80" preserveAspectRatio="none" aria-hidden="true">
-      <path d="M0,64L80,53.3C160,43,320,21,480,16C640,11,800,21,960,26.7C1120,32,1280,32,1360,32L1440,32L1440,80L1360,80C1280,80,1120,80,960,80C800,80,640,80,480,80C320,80,160,80,80,80L0,80Z" fill="var(--brand-bg)"/>
+      <path d="M0,64L80,53.3C160,43,320,21,480,16C640,11,800,21,960,26.7C1120,32,1280,32,1360,32L1440,32L1440,80L1360,80C1280,80,1120,80,960,80C800,80,640,80,480,80C320,80,160,80,80,80L0,80Z" fill="#fff"/>
     </svg>
   </header>
 
-  <main class="pb-5">
-    <section class="container section">
-      <!-- Tabs internos -->
-      <ul class="nav nav-pills justify-content-center gap-2 mb-4">
-        <li class="nav-item"><a class="nav-link active" href="#gal-actividades">Actividades</a></li>
-        <li class="nav-item"><a class="nav-link" href="#gal-templo">Templo & Instalaciones</a></li>
-      </ul>
+  <main class="pb-5 bg-light">
+    <section class="container py-5">
 
-      <!-- Galería 1 -->
-      <div id="gal-actividades" class="mb-5">
-        <h2 class="h4 fw-bold mb-3 text-brand"><i class="fa-solid fa-people-group me-2"></i>Actividades</h2>
-        <p class="text-muted-2 mb-4">Cultos, reuniones de jóvenes, evangelismo y encuentros especiales.</p>
+      <!-- SECCIÓN BASE -->
+      <div class="text-center mb-5">
+        <h2 class="fw-bold text-brand mb-3">Nuestros cuerpos y Actividades</h2>
+        <p class="text-muted">Descubre los distintos cuerpos y ministerios de nuestra iglesia que sirven con gratitud a nuestro buen Dios.</p>
+      </div>
 
-        <div class="row g-3 gallery-grid">
-          <!-- Cambia src/data-full a tus rutas reales -->
-          <div class="col-6 col-md-4 col-lg-3">
-            <a class="gallery-item" href="#" data-full="assets/img/galeria/act-01.jpg">
-              <img loading="lazy" src="assets/img/galeria/act-01.jpg" class="img-fluid rounded-4 shadow-soft" alt="Actividad 1">
-            </a>
+      <!-- COMPONENTE DE SECCIÓN -->
+      <!-- CADA SECCIÓN TIENE SU CARRUSEL -->
+      <!-- Cuerpo de Voluntarios -->
+      <div class="mb-5">
+        <h3 class="h4 fw-bold mb-3 text-brand"><i class="fa-solid fa-handshake-angle me-2"></i>Iglesia Evangelica Pentecostal de Alto Hospicio</h3>
+        <div id="carouselIEPaltohospicio" class="carousel slide rounded-4 shadow-sm overflow-hidden" data-bs-ride="carousel">
+          <div class="carousel-inner">
+            <div class="carousel-item active">
+              <img src="assets/img/galeria/IEPaltohospicio1.jpg" class="d-block w-100" alt="IEPaltohospicio 1">
+            </div>
+            <div class="carousel-item">
+              <img src="assets/img/galeria/IEPaltohospicio2.jpg" class="d-block w-100" alt="IEPaltohospicio 2">
+            </div>
+            <div class="carousel-item">
+              <img src="assets/img/galeria/IEPaltohospicio3.jpg" class="d-block w-100" alt="IEPaltohospicio 3">
+            </div>
           </div>
-          <div class="col-6 col-md-4 col-lg-3">
-            <a class="gallery-item" href="#" data-full="assets/img/galeria/act-02.jpg">
-              <img loading="lazy" src="assets/img/galeria/act-02.jpg" class="img-fluid rounded-4 shadow-soft" alt="Actividad 2">
-            </a>
+          <button class="carousel-control-prev" type="button" data-bs-target="#carouselIEPaltohospicio" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon"></span>
+          </button>
+          <button class="carousel-control-next" type="button" data-bs-target="#carouselIEPaltohospicio" data-bs-slide="next">
+            <span class="carousel-control-next-icon"></span>
+          </button>
+        </div>
+      </div>
+      <!-- Cuerpo de Voluntarios -->
+      <div class="mb-5">
+        <h3 class="h4 fw-bold mb-3 text-brand"><i class="fa-solid fa-handshake-angle me-2"></i>Cuerpo de Voluntarios</h3>
+        <div id="carouselVoluntarios" class="carousel slide rounded-4 shadow-sm overflow-hidden" data-bs-ride="carousel">
+          <div class="carousel-inner">
+            <div class="carousel-item active">
+              <img src="assets/img/galeria/voluntarios1.jpg" class="d-block w-100" alt="Proximamente">
+            </div>
+            <div class="carousel-item">
+              <img src="assets/img/galeria/voluntarios2.jpg" class="d-block w-100" alt="Proximamente">
+            </div>
+            <div class="carousel-item">
+              <img src="assets/img/galeria/voluntarios3.jpg" class="d-block w-100" alt="Proximamente">
+            </div>
           </div>
-          <div class="col-6 col-md-4 col-lg-3">
-            <a class="gallery-item" href="#" data-full="assets/img/galeria/act-03.jpg">
-              <img loading="lazy" src="assets/img/galeria/act-03.jpg" class="img-fluid rounded-4 shadow-soft" alt="Actividad 3">
-            </a>
-          </div>
-          <div class="col-6 col-md-4 col-lg-3">
-            <a class="gallery-item" href="#" data-full="assets/img/galeria/act-04.jpg">
-              <img loading="lazy" src="assets/img/galeria/act-04.jpg" class="img-fluid rounded-4 shadow-soft" alt="Actividad 4">
-            </a>
-          </div>
+          <button class="carousel-control-prev" type="button" data-bs-target="#carouselVoluntarios" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon"></span>
+          </button>
+          <button class="carousel-control-next" type="button" data-bs-target="#carouselVoluntarios" data-bs-slide="next">
+            <span class="carousel-control-next-icon"></span>
+          </button>
         </div>
       </div>
 
-      <!-- Galería 2 -->
-      <div id="gal-templo">
-        <h2 class="h4 fw-bold mb-3 text-brand"><i class="fa-solid fa-church me-2"></i>Templo & Instalaciones</h2>
-        <p class="text-muted-2 mb-4">Nuestro lugar de reunión, espacios de servicio y detalles de la obra local.</p>
-
-        <div class="row g-3 gallery-grid">
-          <div class="col-6 col-md-4 col-lg-3">
-            <a class="gallery-item" href="#" data-full="assets/img/galeria/tmp-01.jpg">
-              <img loading="lazy" src="assets/img/galeria/tmp-01.jpg" class="img-fluid rounded-4 shadow-soft" alt="Templo 1">
-            </a>
+      <!-- Cuerpo de Dorcas -->
+      <div class="mb-5">
+        <h3 class="h4 fw-bold mb-3 text-brand"><i class="fa-solid fa-female me-2"></i>Cuerpo de Dorcas</h3>
+        <div id="carouselDorcas" class="carousel slide rounded-4 shadow-sm overflow-hidden" data-bs-ride="carousel">
+          <div class="carousel-inner">
+            <div class="carousel-item active">
+              <img src="assets/img/galeria/dorcas1.jpeg" class="d-block w-100" alt="Proximamente">
+            </div>
+            <div class="carousel-item">
+              <img src="assets/img/galeria/dorcas2.jpeg" class="d-block w-100" alt="Proximamente">
+            </div>
+            <div class="carousel-item">
+              <img src="assets/img/galeria/dorcas3.jpeg" class="d-block w-100" alt="Proximamente">
+            </div>
           </div>
-          <div class="col-6 col-md-4 col-lg-3">
-            <a class="gallery-item" href="#" data-full="assets/img/galeria/tmp-02.jpg">
-              <img loading="lazy" src="assets/img/galeria/tmp-02.jpg" class="img-fluid rounded-4 shadow-soft" alt="Templo 2">
-            </a>
-          </div>
-          <div class="col-6 col-md-4 col-lg-3">
-            <a class="gallery-item" href="#" data-full="assets/img/galeria/tmp-03.jpg">
-              <img loading="lazy" src="assets/img/galeria/tmp-03.jpg" class="img-fluid rounded-4 shadow-soft" alt="Templo 3">
-            </a>
-          </div>
-          <div class="col-6 col-md-4 col-lg-3">
-            <a class="gallery-item" href="#" data-full="assets/img/galeria/tmp-04.jpg">
-              <img loading="lazy" src="assets/img/galeria/tmp-04.jpg" class="img-fluid rounded-4 shadow-soft" alt="Templo 4">
-            </a>
-          </div>
+          <button class="carousel-control-prev" type="button" data-bs-target="#carouselDorcas" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon"></span>
+          </button>
+          <button class="carousel-control-next" type="button" data-bs-target="#carouselDorcas" data-bs-slide="next">
+            <span class="carousel-control-next-icon"></span>
+          </button>
         </div>
       </div>
+
+      <!-- Cuerpo de Ciclistas -->
+      <div class="mb-5">
+        <h3 class="h4 fw-bold mb-3 text-brand"><i class="fa-solid fa-bicycle me-2"></i>Cuerpo de Ciclistas</h3>
+        <div id="carouselCiclistas" class="carousel slide rounded-4 shadow-sm overflow-hidden" data-bs-ride="carousel">
+          <div class="carousel-inner">
+            <div class="carousel-item active">
+              <img src="assets/img/galeria/ciclistas1.jpg" class="d-block w-100" alt="Ciclistas 1">
+            </div>
+            <div class="carousel-item">
+              <img src="assets/img/galeria/ciclistas2.jpg" class="d-block w-100" alt="Ciclistas 2">
+            </div>
+            <div class="carousel-item">
+              <img src="assets/img/galeria/ciclistas3.jpg" class="d-block w-100" alt="Ciclistas 3">
+            </div>
+            <div class="carousel-item">
+              <img src="assets/img/galeria/ciclistas4.jpeg" class="d-block w-100" alt="Ciclistas 3">
+            </div>
+          </div>
+          <button class="carousel-control-prev" type="button" data-bs-target="#carouselCiclistas" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon"></span>
+          </button>
+          <button class="carousel-control-next" type="button" data-bs-target="#carouselCiclistas" data-bs-slide="next">
+            <span class="carousel-control-next-icon"></span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Ministerio Carcelario -->
+      <div class="mb-5">
+        <h3 class="h4 fw-bold mb-3 text-brand"><i class="fa-solid fa-praying-hands me-2"></i>Ministerio Carcelario</h3>
+        <div id="carouselCarcelario" class="carousel slide rounded-4 shadow-sm overflow-hidden" data-bs-ride="carousel">
+          <div class="carousel-inner">
+            <div class="carousel-item active">
+              <img src="assets/img/galeria/carcelario1.jpeg" class="d-block w-100" alt="Ministerio Carcelario 1">
+            </div>
+          </div>
+          <button class="carousel-control-prev" type="button" data-bs-target="#carouselCarcelario" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon"></span>
+          </button>
+          <button class="carousel-control-next" type="button" data-bs-target="#carouselCarcelario" data-bs-slide="next">
+            <span class="carousel-control-next-icon"></span>
+          </button>
+        </div>
+      </div> 
+
+      <!-- Cuerpo de Jóvenes -->
+      <div class="mb-5">
+        <h3 class="h4 fw-bold mb-3 text-brand"><i class="fa-solid fa-users-line me-2"></i>Cuerpo de Jóvenes</h3>
+        <div id="carouselJovenes" class="carousel slide rounded-4 shadow-sm overflow-hidden" data-bs-ride="carousel">
+          <div class="carousel-inner">
+            <div class="carousel-item active">
+              <img src="assets/img/galeria/jovenes1.jpeg" class="d-block w-100" alt="Jóvenes 1">
+            </div>
+            <div class="carousel-item">
+              <img src="assets/img/galeria/jovenes2.jpeg" class="d-block w-100" alt="Jóvenes 2">
+            </div>
+            <div class="carousel-item">
+              <img src="assets/img/galeria/jovenes3.jpeg" class="d-block w-100" alt="Jóvenes 3">
+            </div>
+          </div>
+          <button class="carousel-control-prev" type="button" data-bs-target="#carouselJovenes" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon"></span>
+          </button>
+          <button class="carousel-control-next" type="button" data-bs-target="#carouselJovenes" data-bs-slide="next">
+            <span class="carousel-control-next-icon"></span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Cuerpo de Señoritas -->
+      <div class="mb-5">
+        <h3 class="h4 fw-bold mb-3 text-brand"><i class="fa-solid fa-person-dress me-2"></i>Cuerpo de Señoritas</h3>
+        <div id="carouselSenoritas" class="carousel slide rounded-4 shadow-sm overflow-hidden" data-bs-ride="carousel">
+          <div class="carousel-inner">
+            <div class="carousel-item active">
+              <img src="assets/img/galeria/senoritas1.jpeg" class="d-block w-100" alt="Señoritas 1">
+            </div>
+            <div class="carousel-item">
+              <img src="assets/img/galeria/senoritas2.jpeg" class="d-block w-100" alt="Señoritas 2">
+            </div>
+            <div class="carousel-item active">
+              <img src="assets/img/galeria/senoritas3.jpeg" class="d-block w-100" alt="Señoritas 3">
+            </div>
+            <div class="carousel-item">
+              <img src="assets/img/galeria/senoritas4.jpeg" class="d-block w-100" alt="Señoritas 4">
+            </div>
+            <div class="carousel-item active">
+              <img src="assets/img/galeria/senoritas5.jpeg" class="d-block w-100" alt="Señoritas 5">
+            </div>
+            <div class="carousel-item">
+              <img src="assets/img/galeria/senoritas6.jpeg" class="d-block w-100" alt="Señoritas 6">
+            </div>
+            <div class="carousel-item">
+              <img src="assets/img/galeria/senoritas7.jpeg" class="d-block w-100" alt="Señoritas 6">
+            </div>
+          </div>
+          <button class="carousel-control-prev" type="button" data-bs-target="#carouselSenoritas" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon"></span>
+          </button>
+          <button class="carousel-control-next" type="button" data-bs-target="#carouselSenoritas" data-bs-slide="next">
+            <span class="carousel-control-next-icon"></span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Coros de la Iglesia -->
+      <div class="mb-5">
+        <h3 class="h4 fw-bold mb-3 text-brand"><i class="fa-solid fa-music me-2"></i>Coros de la Iglesia</h3>
+        <div id="carouselCoros" class="carousel slide rounded-4 shadow-sm overflow-hidden" data-bs-ride="carousel">
+          <div class="carousel-inner">
+            <div class="carousel-item active">
+              <img src="assets/img/galeria/coros1.jpg" class="d-block w-100" alt="Coros 1">
+            </div>
+            <div class="carousel-item">
+              <img src="assets/img/galeria/coros2.jpg" class="d-block w-100" alt="Coros 2">
+            </div>
+            <div class="carousel-item">
+              <img src="assets/img/galeria/coros3.jpg" class="d-block w-100" alt="Coros 3">
+            </div>
+            <div class="carousel-item">
+              <img src="assets/img/galeria/coros4.jpeg" class="d-block w-100" alt="Coros 3">
+            </div>
+          </div>
+          <button class="carousel-control-prev" type="button" data-bs-target="#carouselCoros" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon"></span>
+          </button>
+          <button class="carousel-control-next" type="button" data-bs-target="#carouselCoros" data-bs-slide="next">
+            <span class="carousel-control-next-icon"></span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Cuerpo Bíblico Visualizado -->
+      <div class="mb-5">
+        <h3 class="h4 fw-bold mb-3 text-brand"><i class="fa-solid fa-book-bible me-2"></i>Cuerpo Bíblico Visualizado</h3>
+        <div id="carouselBiblico" class="carousel slide rounded-4 shadow-sm overflow-hidden" data-bs-ride="carousel">
+          <div class="carousel-inner">
+            <div class="carousel-item active">
+              <img src="assets/img/galeria/biblico1.jpeg" class="d-block w-100" alt="Cuerpo Bíblico 1">
+            </div>
+            <div class="carousel-item">
+              <img src="assets/img/galeria/biblico2.jpeg" class="d-block w-100" alt="Cuerpo Bíblico 2">
+            </div>
+            <div class="carousel-item">
+              <img src="assets/img/galeria/biblico4.jpeg" class="d-block w-100" alt="Cuerpo Bíblico 2">
+            </div>
+            <div class="carousel-item">
+              <img src="assets/img/galeria/biblico5.jpeg" class="d-block w-100" alt="Cuerpo Bíblico 2">
+            </div>
+          </div>
+          <button class="carousel-control-prev" type="button" data-bs-target="#carouselBiblico" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon"></span>
+          </button>
+          <button class="carousel-control-next" type="button" data-bs-target="#carouselBiblico" data-bs-slide="next">
+            <span class="carousel-control-next-icon"></span>
+          </button>
+        </div>
+      </div>
+
     </section>
   </main>
-
-  <!-- Modal visor -->
-  <div class="modal fade" id="viewerModal" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-xl">
-      <div class="modal-content bg-dark border-0">
-        <div class="modal-body p-0 position-relative">
-          <button type="button" class="btn btn-light position-absolute end-0 m-3" data-bs-dismiss="modal" aria-label="Cerrar">
-            <i class="fa-solid fa-xmark"></i>
-          </button>
-          <img id="viewerImage" src="" alt="Vista ampliada" class="w-100 h-100 object-fit-contain rounded-2">
-        </div>
-      </div>
-    </div>
-  </div>
 
   <footer class="py-4 border-top small text-center text-body-secondary">
     <div class="container">© <span id="year-gal"></span> IEP Alto Hospicio — Galería</div>
@@ -138,7 +299,59 @@
 
   <!-- JS -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-  <!-- JS específico de la galería -->
-  <script src="assets/js/galerias.js"></script>
+  <script>
+    document.getElementById("year-gal").textContent = new Date().getFullYear();
+  </script>
+
+  <style>
+    .carousel {
+      max-width: 900px;       /* limita el ancho total */
+      margin: 0 auto;         /* centra el carrusel */
+      border-radius: 15px;    /* bordes redondeados */
+    }
+
+    .carousel-inner {
+      border-radius: 15px;
+    }
+
+    .carousel-item img {
+      height: 400px;          /* altura moderada */
+      object-fit: cover;      /* recorta sin deformar */
+      object-position: center;/* centra la imagen */
+    }
+
+    /* Ajuste responsive para pantallas pequeñas */
+    @media (max-width: 768px) {
+      .carousel-item img {
+        height: 250px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .carousel-item img {
+        height: 200px;
+      }
+    }
+
+    /* Espaciado entre secciones */
+    .mb-5 {
+      margin-bottom: 3rem !important;
+    }
+
+    h3.h4 {
+      text-align: center;
+      margin-bottom: 1rem;
+    }
+  </style>
+  <script>
+    document.querySelectorAll('.carousel-item img').forEach(img => {
+      img.addEventListener('error', () => {
+        img.src = 'assets/img/galeria/None.png';
+        img.alt = 'Próximamente - IEP Alto Hospicio';
+        img.classList.add('placeholder-img');
+      });
+    });
+  </script>
+
 </body>
 </html>

@@ -1,0 +1,298 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Mapa Interactivo – Iglesia (Piso 1 y Piso 2)</title>
+
+  <!-- Tipografías -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --brand-blue:#0f2b5b;
+      --brand-bg:#f8fafc;
+      --brand-gold:#d6a01d;
+      --brand-gold-dark:#bd8a16;
+
+      --radius-lg:1rem;
+      --shadow-soft:0 10px 22px rgba(0,0,0,.08), 0 4px 10px rgba(0,0,0,.06);
+      --shadow-hover:0 14px 28px rgba(0,0,0,.12), 0 10px 10px rgba(0,0,0,.06);
+      --transition:all .25s ease;
+    }
+
+    html,body{height:100%}
+    body{
+      margin:0; background:var(--brand-bg); color:#0b1020;
+      font:14px/1.45 Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+    }
+
+    /* HERO */
+    header.hero{
+      background:
+        radial-gradient(1200px 600px at 20% 10%, rgba(255,255,255,.25), transparent 60%),
+        linear-gradient(180deg, var(--brand-blue), #162b52 70%);
+      color:#fff; padding:18px 16px; position:sticky; top:0; z-index:5;
+      display:grid; grid-template-columns:1fr auto; gap:12px; align-items:center;
+      border-bottom:1px solid rgba(255,255,255,.15);
+    }
+    .hero-title{margin:0; font-weight:700; letter-spacing:.2px; font-size:clamp(1.05rem,2.5vw,1.35rem)}
+    .tabs{display:inline-flex; background:rgba(255,255,255,.15); padding:6px; border-radius:999px; gap:6px}
+    .tab-btn{border:0; background:transparent; color:#fff; padding:8px 14px; border-radius:999px; cursor:pointer; font-weight:700}
+    .tab-btn.active{background:#fff; color:var(--brand-blue)}
+
+    /* LAYOUT */
+    .wrap{padding:14px}
+    .viewer{
+      position:relative; background:#fff; border:1px solid rgba(15,43,91,.08);
+      border-radius:var(--radius-lg); overflow:hidden; box-shadow:var(--shadow-soft);
+      max-width:1400px; margin:0 auto;
+    }
+    .viewer-toolbar{
+      position:sticky; top:0; background:#fff; z-index:3;
+      display:flex; align-items:center; justify-content:space-between; gap:10px;
+      padding:10px 12px; border-bottom:1px solid rgba(15,43,91,.08);
+    }
+    .actions{display:flex; gap:8px; flex-wrap:wrap}
+    .btn{
+      appearance:none; cursor:pointer; font-weight:600;
+      border:1px solid rgba(15,43,91,.18); background:#fff; color:#0b1020;
+      padding:8px 12px; border-radius:10px; transition:var(--transition);
+    }
+    .btn:hover{box-shadow:var(--shadow-hover); transform:translateY(-1px)}
+    .btn-brand{background:var(--brand-gold); border-color:var(--brand-gold); color:#fff}
+    .btn-brand:hover{background:var(--brand-gold-dark); border-color:var(--brand-gold-dark)}
+    .input{border:1px solid rgba(15,43,91,.18); border-radius:10px; padding:6px 10px; height:34px}
+
+    .viewer-stage{position:relative; overflow:hidden; height:min(72vh,1000px); background:#f7f9fb}
+    .stage{position:absolute; inset:0}
+    .stage svg{width:100%; height:100%; display:block}
+
+    /* Hover/selección */
+    .stage [data-hit]:hover{
+      filter: drop-shadow(0 0 6px rgba(13,110,253,.6)) brightness(1.03);
+      transition:filter .15s ease; cursor:pointer;
+    }
+    .is-selected{
+      outline:2.5px solid var(--brand-gold);
+      outline-offset:2px;
+      filter: drop-shadow(0 0 10px rgba(214,160,29,.65));
+    }
+
+    .tip{position:absolute; pointer-events:none; background:#111; color:#fff; padding:6px 8px; font-size:12px; border-radius:8px; opacity:0; transform:translate(-50%,-120%); white-space:nowrap}
+    .floating-ctrls{position:absolute; right:14px; bottom:14px; display:flex; flex-direction:column; gap:8px; z-index:3}
+  </style>
+</head>
+<body>
+  <header class="hero">
+    <h1 class="hero-title">Mapa interactivo – Iglesia</h1>
+    <div class="tabs" role="tablist" aria-label="Pisos">
+      <button class="tab-btn active" data-floor="1" aria-selected="true">Piso 1</button>
+      <button class="tab-btn" data-floor="2" aria-selected="false">Piso 2</button>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <section class="viewer" aria-live="polite">
+      <div class="viewer-toolbar">
+        <div class="actions">
+          <button id="zoomOut" class="btn">−</button>
+          <button id="zoomReset" class="btn">100%</button>
+          <button id="zoomIn" class="btn">+</button>
+          <button id="fitPage" class="btn">Ajustar</button>
+          <button id="btnFull" class="btn btn-brand">Pantalla completa</button>
+        </div>
+        <div class="actions">
+          <label class="btn" style="cursor:default">Piso:
+            <select id="floorSelect" class="input" style="margin-left:8px">
+              <option value="assets/svg/Piso1.svg">Piso 1</option>
+              <option value="assets/svg/Piso2.svg">Piso 2</option>
+            </select>
+          </label>
+        </div>
+      </div>
+
+      <div id="viewer" class="viewer-stage">
+        <div id="stage" class="stage" aria-label="visor de plano"></div>
+        <div class="floating-ctrls">
+          <button id="zoomIn2" class="btn">+</button>
+          <button id="zoomOut2" class="btn">−</button>
+        </div>
+        <div id="tip" class="tip"></div>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const STAGE = document.getElementById('stage');
+    const TIP = document.getElementById('tip');
+    const viewer = document.getElementById('viewer');
+    const floorSelect = document.getElementById('floorSelect');
+    const tabs = document.querySelectorAll('.tab-btn');
+
+    let svg, vb, curr = {x:0, y:0, w:100, h:100};
+    let isPanning = false, start = {x:0, y:0}, vbStart={x:0,y:0};
+    let lastSelected = null;
+
+    const nice = v => +v.toFixed(3);
+
+    function setViewBox(v){
+      curr = {...v};
+      if(svg) svg.setAttribute('viewBox', `${nice(v.x)} ${nice(v.y)} ${nice(v.w)} ${nice(v.h)}`);
+    }
+    function fitToScreen(){
+      if(!vb) return;
+      const pad = 0.04;
+      setViewBox({ x: vb.x - vb.w*pad, y: vb.y - vb.h*pad, w: vb.w*(1+2*pad), h: vb.h*(1+2*pad) });
+    }
+    function resetView(){ if(vb) setViewBox({...vb}); }
+    function screenToSvgPoint(clientX, clientY){
+      const rect = svg.getBoundingClientRect();
+      const px = (clientX - rect.left)/rect.width;
+      const py = (clientY - rect.top)/rect.height;
+      return { x: curr.x + curr.w*px, y: curr.y + curr.h*py };
+    }
+    function zoomAt(delta, cx, cy){
+      const factor = delta>0 ? 1.15 : 0.85;
+      const pt = screenToSvgPoint(cx, cy);
+      const nw = curr.w*factor, nh = curr.h*factor;
+      const nx = pt.x - (pt.x - curr.x) * (nw/curr.w);
+      const ny = pt.y - (pt.y - curr.y) * (nh/curr.h);
+      setViewBox({x:nx, y:ny, w:nw, h:nh});
+    }
+
+    async function loadSVG(url){
+      const res = await fetch(url);
+      const txt = await res.text();
+      STAGE.innerHTML = txt;
+      svg = STAGE.querySelector('svg');
+
+      if(!svg.getAttribute('viewBox')){
+        const w = parseFloat(svg.getAttribute('width')) || 1000;
+        const h = parseFloat(svg.getAttribute('height')) || 800;
+        svg.setAttribute('viewBox', `0 0 ${w} ${h}`);
+      }
+      const [x,y,w,h] = svg.getAttribute('viewBox').split(/\s+/).map(parseFloat);
+      vb = {x,y,w,h};
+      fitToScreen();
+
+      attachInteractivity();
+      markSelectable();
+      wireClicks();
+    }
+
+    function attachInteractivity(){
+      svg.addEventListener('pointerdown', (e)=>{
+        if(e.button!==0) return;
+        isPanning = true; svg.setPointerCapture(e.pointerId);
+        start = {x:e.clientX, y:e.clientY}; vbStart = {...curr};
+      });
+      const endPan = e=>{ isPanning=false; try{ svg.releasePointerCapture(e.pointerId) }catch{} };
+      svg.addEventListener('pointerup', endPan);
+      svg.addEventListener('pointercancel', endPan);
+
+      svg.addEventListener('pointermove', (e)=>{
+        // tooltip
+        const el = e.target;
+        if(el && el.closest('svg')){
+          const name = el.getAttribute?.('data-name') || el.getAttribute?.('id');
+          if(name){
+            TIP.textContent = name;
+            TIP.style.opacity = .92;
+            TIP.style.left = e.clientX + 'px';
+            TIP.style.top  = e.clientY + 'px';
+          } else { TIP.style.opacity = 0; }
+        }
+        // pan
+        if(!isPanning) return;
+        const dx = e.clientX - start.x;
+        const dy = e.clientY - start.y;
+        const rect = svg.getBoundingClientRect();
+        const kx = curr.w/rect.width;
+        const ky = curr.h/rect.height;
+        setViewBox({x: vbStart.x - dx*kx, y: vbStart.y - dy*ky, w: vbStart.w, h: vbStart.h});
+      });
+
+      svg.addEventListener('wheel', (e)=>{
+        e.preventDefault();
+        zoomAt(e.deltaY, e.clientX, e.clientY);
+      }, {passive:false});
+
+      // botones
+      document.getElementById('zoomIn').onclick =
+      document.getElementById('zoomIn2').onclick = () => zoomAt(-1, viewer.clientWidth/2, viewer.clientHeight/2);
+      document.getElementById('zoomOut').onclick =
+      document.getElementById('zoomOut2').onclick = () => zoomAt(+1, viewer.clientWidth/2, viewer.clientHeight/2);
+      document.getElementById('zoomReset').onclick = resetView;
+      document.getElementById('fitPage').onclick = fitToScreen;
+
+      // fullscreen
+      document.getElementById('btnFull').onclick = ()=>{
+        (viewer.requestFullscreen||viewer.webkitRequestFullscreen||viewer.msRequestFullscreen||viewer.mozRequestFullScreen).call(viewer);
+      };
+      document.addEventListener('keydown', (e)=>{
+        if(e.key==='f'||e.key==='F') document.getElementById('btnFull').click();
+        if(e.key==='+') document.getElementById('zoomIn').click();
+        if(e.key==='-') document.getElementById('zoomOut').click();
+        if(e.key==='0') document.getElementById('zoomReset').click();
+      });
+    }
+
+    // selección simple (solo resaltar y centrar)
+    function markSelectable(){
+      const els = svg.querySelectorAll('path,rect,circle,ellipse,polygon,polyline,g,image,text');
+      els.forEach(el=>{
+        if(el.id || el.getAttribute('data-name')) el.setAttribute('data-hit','1');
+      });
+    }
+    function wireClicks(){
+      svg.addEventListener('click', (e)=>{
+        const el = e.target?.closest('[data-hit]');
+        if(!el) return;
+        if(lastSelected) lastSelected.classList.remove('is-selected');
+        lastSelected = el;
+        el.classList.add('is-selected');
+
+        const bb = el.getBBox();
+        setViewBox({
+          x: bb.x - bb.width*0.6,
+          y: bb.y - bb.height*0.6,
+          w: bb.width*2.2,
+          h: bb.height*2.2
+        });
+      });
+    }
+
+    // Tabs y selector de piso
+    function changeFloorUI(floor){
+      tabs.forEach(t=>{
+        const f = Number(t.dataset.floor);
+        const active = f===floor;
+        t.classList.toggle('active', active);
+        t.setAttribute('aria-selected', String(active));
+      });
+      floorSelect.value = floor===1 ? 'assets/svg/Piso1.svg' : 'assets/svg/Piso2.svg';
+    }
+    async function changeFloor(floor){
+      changeFloorUI(floor);
+      const url = floor===1 ? 'assets/svg/Piso1.svg' : 'assets/svg/Piso2.svg';
+      await loadSVG(url);
+    }
+    tabs.forEach(btn=> btn.addEventListener('click', ()=> changeFloor(Number(btn.dataset.floor)) ));
+    floorSelect.addEventListener('change', e=>{
+      const url = e.target.value;
+      const floor = url.includes('Piso2') ? 2 : 1;
+      changeFloorUI(floor);
+      loadSVG(url);
+    });
+
+    // init
+    changeFloor(1).catch(err=>{
+      STAGE.innerHTML = `<div style="padding:20px;color:#b91c1c">No se pudo cargar el SVG. Verifica <code>assets/svg/</code> o usa Live Server para evitar CORS.</div>`;
+      console.error(err);
+    });
+  </script>
+</body>
+</html>

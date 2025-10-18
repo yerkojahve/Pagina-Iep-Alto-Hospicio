@@ -318,7 +318,7 @@
         </div>
 
         <div class="text-center mt-4">
-          <a href="https://www.youtube.com/@TU_CANAL" target="_blank" class="btn btn-brand">
+          <a href="https://www.youtube.com/@iepaltohospicio5466" target="_blank" class="btn btn-brand">
             <i class="fab fa-youtube me-1"></i> Ver Canal
           </a>
         </div>
@@ -463,7 +463,7 @@
       </div>
     </div>
     <!-- CONTACTO -->
-    <section id="contacto" class="bg-light py-5">
+    <section id="mapa" class="py-5" style="background-color:#0f2b5b;">
       <div class="container section-inner">
         <div class="row g-4 align-items-stretch">
 
@@ -550,53 +550,57 @@
         </div>
       </div>
     </section>
-
-    <section id="mapa">
-      <div class="container section-inner">
-        <div class="row g-4 align-items-center">
-          <div class="col-lg-7">
-            <div class="map-card">
-              <div id="map" aria-label="Mapa ubicación IEP Alto Hospicio"></div>
-            </div>
+<!-- ===================== SECCIÓN MAPA + TARJETA ===================== -->
+  <section id="mapa" class="section-blue py-5">
+    <div class="container section-inner">
+      <div class="row g-4 align-items-start justify-content-center">
+        
+        <!-- MAPA -->
+        <div class="col-lg-7">
+          <div class="map-card shadow-sm rounded-4 overflow-hidden">
+            <div id="map" aria-label="Mapa ubicación IEP Alto Hospicio" style="height:400px;"></div>
           </div>
+        </div>
 
-          <div class="col-lg-5">
-            <div class="p-4 rounded-4 shadow-soft bg-light-subtle h-100">
+        <!-- INFORMACIÓN + BOTÓN -->
+        <div class="col-lg-5">
+          <div class="p-4 rounded-4 shadow-soft bg-white h-100 d-flex flex-column justify-content-between">
+            <div>
               <h2 class="h4 fw-bold mb-3 text-brand">Ubicación</h2>
-
               <p class="mb-3">
                 <strong>Iglesia Evangélica Pentecostal</strong><br>
                 Alto Hospicio, Tarapacá — Chile
               </p>
 
-              <ul class="list-unstyled mb-3">
-                <li class="mb-2">
-                  <i class="fa-solid fa-location-dot text-brand me-2"></i>
-                  Av. La Pampa N° 26, Sitio 1
-                </li>
-                <li class="mb-2">
-                  <i class="fa-solid fa-road text-brand me-2"></i>
-                  Acceso por Ruta 16
-                </li>
-                <li class="mb-2">
-                  <i class="fa-solid fa-bus text-brand me-2"></i>
-                  Líneas de colectivos y buses locales
-                </li>
-                <li class="mb-2">
-                  <i class="fa-solid fa-person-walking text-brand me-2"></i>
-                  Cercano a Av. Teniente Hernán Merino Correa
-                </li>
+              <ul class="list-unstyled mb-4 text-muted small">
+                <li class="mb-2"><i class="fa-solid fa-location-dot text-brand me-2"></i> Av. La Pampa N° 26, Sitio 1</li>
+                <li class="mb-2"><i class="fa-solid fa-road text-brand me-2"></i> Acceso por Ruta 16</li>
+                <li class="mb-2"><i class="fa-solid fa-bus text-brand me-2"></i> Líneas de colectivos y buses locales</li>
+                <li><i class="fa-solid fa-person-walking text-brand me-2"></i> Cercano a Av. Teniente Hernán Merino Correa</li>
               </ul>
+            </div>
 
-              <a href="https://maps.google.com/?q=-20.268064543090464,-70.09718909493581" target="_blank"
-                class="btn btn-brand" rel="noopener">
-                Ver en Google Maps
+            <!-- BOTONES -->
+            <div class="d-grid gap-2 mt-3">
+              <a href="https://maps.google.com/?q=-20.268064543090464,-70.09718909493581" 
+                target="_blank" 
+                class="btn btn-brand d-flex align-items-center justify-content-center gap-2">
+                <i class="fa-solid fa-map-location-dot"></i> Ver en Google Maps
+              </a>
+
+              <a href="estructura.html" 
+                class="btn btn-outline-brand d-flex align-items-center justify-content-center gap-2">
+                <i class="fa-solid fa-layer-group"></i> Mapa Interactivo del Templo
               </a>
             </div>
           </div>
         </div>
+
       </div>
-    </section>
+    </div>
+  </section>
+<!-- ================================================================ -->
+
 
   </main>
 
@@ -608,6 +612,28 @@
 
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <script src="assets/js/main.js"></script>
+  <script>
+  // === MAPA LEAFLET ===
+  document.addEventListener("DOMContentLoaded", () => {
+    const map = L.map("map", {
+      center: [-20.268064543090464, -70.09718909493581],
+      zoom: 15,
+      scrollWheelZoom: false,
+      zoomControl: true
+    });
+
+    L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+      maxZoom: 19,
+      attribution: '&copy; <a href="https://www.openstreetmap.org/">OSM</a>'
+    }).addTo(map);
+
+    const marker = L.marker([-20.268064543090464, -70.09718909493581])
+      .addTo(map)
+      .bindPopup("<b>Iglesia Evangélica Pentecostal</b><br>Av. La Pampa N° 26, Alto Hospicio")
+      .openPopup();
+  });
+</script>
+
 </body>
 
 </html>

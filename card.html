@@ -1,0 +1,825 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diseños de Tarjetas para Iglesias</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #4a6fa5;
+            --secondary: #6b8cbc;
+            --accent: #ff9a3c;
+            --light: #f8f9fa;
+            --dark: #343a40;
+            --success: #28a745;
+            --warning: #ffc107;
+            --danger: #dc3545;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4edf5 100%);
+            color: var(--dark);
+            line-height: 1.6;
+            padding: 20px;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 20px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        h1 {
+            color: var(--primary);
+            margin-bottom: 10px;
+        }
+        
+        .subtitle {
+            color: var(--dark);
+            opacity: 0.8;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .section-title {
+            text-align: center;
+            margin: 40px 0 20px;
+            color: var(--primary);
+            border-bottom: 2px solid var(--secondary);
+            padding-bottom: 10px;
+        }
+        
+        .cards-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 30px;
+            margin-bottom: 50px;
+        }
+        
+        /* Estilos base para todas las tarjetas */
+        .card {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+        }
+        
+        .church-image {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+        }
+        
+        .church-name {
+            font-size: 1.4rem;
+            margin-bottom: 5px;
+            color: var(--primary);
+        }
+        
+        .church-denomination {
+            font-size: 0.9rem;
+            color: var(--secondary);
+            margin-bottom: 10px;
+        }
+        
+        .church-address {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 15px;
+            color: #666;
+        }
+        
+        .church-address i {
+            margin-right: 8px;
+            color: var(--primary);
+        }
+        
+        .schedule-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        
+        .schedule-day {
+            font-weight: 500;
+        }
+        
+        .schedule-time {
+            color: var(--primary);
+            font-weight: 600;
+        }
+        
+        .status-indicator {
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            margin-right: 8px;
+        }
+        
+        .status-open {
+            background-color: var(--success);
+        }
+        
+        .status-closed {
+            background-color: var(--danger);
+        }
+        
+        .status-soon {
+            background-color: var(--warning);
+        }
+        
+        /* Diseño 1 - Clásico */
+        .card-classic .card-header {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 1.5rem;
+        }
+        
+        .card-classic .church-status {
+            margin-top: 10px;
+            font-size: 0.9rem;
+        }
+        
+        .card-classic .card-content {
+            padding: 1.5rem;
+        }
+        
+        /* Diseño 2 - Moderno */
+        .card-modern {
+            border-top: 5px solid var(--accent);
+        }
+        
+        .card-modern .card-header {
+            padding: 1.5rem 1.5rem 0;
+            position: relative;
+        }
+        
+        .card-modern .church-status {
+            position: absolute;
+            top: 1.5rem;
+            right: 1.5rem;
+            background: white;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .card-modern .card-content {
+            padding: 0 1.5rem 1.5rem;
+        }
+        
+        /* Diseño 3 - Minimalista */
+        .card-minimal {
+            background: #f9fbfd;
+            border: 1px solid #e1e8f0;
+        }
+        
+        .card-minimal .card-header {
+            padding: 1.5rem 1.5rem 0;
+        }
+        
+        .card-minimal .church-name {
+            font-size: 1.3rem;
+        }
+        
+        .card-minimal .card-content {
+            padding: 0 1.5rem 1.5rem;
+        }
+        
+        .card-minimal .schedule-item {
+            border-bottom: 1px solid #e8f0fa;
+        }
+        
+        /* Diseño 4 - Con imagen destacada */
+        .card-featured {
+            position: relative;
+        }
+        
+        .card-featured .church-image {
+            height: 200px;
+        }
+        
+        .card-featured .card-header {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(0,0,0,0.7);
+            color: white;
+            padding: 1rem 1.5rem;
+        }
+        
+        .card-featured .church-name {
+            color: white;
+        }
+        
+        .card-featured .church-denomination {
+            color: #ccc;
+        }
+        
+        .card-featured .card-content {
+            padding: 1.5rem;
+        }
+        
+        /* Diseño 5 - Con pestañas */
+        .card-tabs .card-header {
+            display: flex;
+            background: var(--light);
+            border-bottom: 1px solid #e1e8f0;
+        }
+        
+        .card-tabs .tab {
+            flex: 1;
+            text-align: center;
+            padding: 1rem;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        
+        .card-tabs .tab.active {
+            background: white;
+            border-bottom: 3px solid var(--primary);
+            font-weight: 600;
+        }
+        
+        .card-tabs .tab-content {
+            padding: 1.5rem;
+            display: none;
+        }
+        
+        .card-tabs .tab-content.active {
+            display: block;
+        }
+        
+        /* Diseño 6 - Con estadísticas */
+        .card-stats .card-header {
+            padding: 1.5rem;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+        }
+        
+        .card-stats .church-stats {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 15px;
+            text-align: center;
+        }
+        
+        .card-stats .stat {
+            flex: 1;
+        }
+        
+        .card-stats .stat-value {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+        
+        .card-stats .stat-label {
+            font-size: 0.8rem;
+            opacity: 0.9;
+        }
+        
+        .card-stats .card-content {
+            padding: 1.5rem;
+        }
+        
+        /* Diseño 7 - Con mapa */
+        .card-map .card-header {
+            padding: 1.5rem 1.5rem 0;
+        }
+        
+        .card-map .map-placeholder {
+            height: 150px;
+            background: #e9f2fa;
+            margin: 1rem 1.5rem;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary);
+            font-weight: 600;
+        }
+        
+        .card-map .card-content {
+            padding: 0 1.5rem 1.5rem;
+        }
+        
+        /* Diseño 8 - Con botones de acción */
+        .card-actions .card-header {
+            padding: 1.5rem;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+        }
+        
+        .card-actions .card-content {
+            padding: 1.5rem;
+        }
+        
+        .card-actions .action-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+        
+        .card-actions .btn {
+            padding: 8px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: background 0.3s;
+        }
+        
+        .card-actions .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+        
+        .card-actions .btn-outline {
+            background: transparent;
+            border: 1px solid var(--primary);
+            color: var(--primary);
+        }
+        
+        /* Diseño 9 - Horizontal */
+        .card-horizontal {
+            display: flex;
+            height: 200px;
+        }
+        
+        .card-horizontal .image-container {
+            flex: 0 0 40%;
+        }
+        
+        .card-horizontal .church-image {
+            height: 100%;
+            border-radius: 10px 0 0 10px;
+        }
+        
+        .card-horizontal .card-content {
+            flex: 1;
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        
+        .card-horizontal .schedule-item {
+            padding: 5px 0;
+            border: none;
+        }
+        
+        /* Diseño 10 - Con calificación */
+        .card-rating .card-header {
+            padding: 1.5rem;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            position: relative;
+        }
+        
+        .card-rating .rating {
+            position: absolute;
+            top: 1.5rem;
+            right: 1.5rem;
+            background: rgba(255,255,255,0.2);
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+        }
+        
+        .card-rating .card-content {
+            padding: 1.5rem;
+        }
+        
+        .card-rating .reviews {
+            margin-top: 15px;
+            font-size: 0.9rem;
+            color: #666;
+        }
+        
+        footer {
+            text-align: center;
+            margin-top: 50px;
+            padding: 20px;
+            color: #666;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Diseños de Tarjetas para Iglesias</h1>
+        <p class="subtitle">Explora diferentes diseños de tarjetas para mostrar información de iglesias con sus horarios de llegada y salida. Pasa el cursor sobre las tarjetas para ver efectos de hover.</p>
+    </header>
+    
+    <div class="container">
+        <h2 class="section-title">Diseño Clásico</h2>
+        <div class="cards-container">
+            <div class="card card-classic">
+                <div class="card-header">
+                    <h3 class="church-name">Catedral de San Miguel</h3>
+                    <p class="church-denomination">Iglesia Católica</p>
+                    <div class="church-status">
+                        <span class="status-indicator status-open"></span>
+                        Abierto ahora
+                    </div>
+                </div>
+                <img src="https://images.unsplash.com/photo-1515549832467-8783363e19b6?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80" alt="Catedral de San Miguel" class="church-image">
+                <div class="card-content">
+                    <div class="church-address">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <span>Av. Principal 123, Centro</span>
+                    </div>
+                    <div class="schedule-item">
+                        <span class="schedule-day">Lunes a Viernes</span>
+                        <span class="schedule-time">07:00 - 19:00</span>
+                    </div>
+                    <div class="schedule-item">
+                        <span class="schedule-day">Sábados</span>
+                        <span class="schedule-time">08:00 - 20:00</span>
+                    </div>
+                    <div class="schedule-item">
+                        <span class="schedule-day">Domingos</span>
+                        <span class="schedule-time">06:00 - 21:00</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <h2 class="section-title">Diseño Moderno</h2>
+        <div class="cards-container">
+            <div class="card card-modern">
+                <div class="card-header">
+                    <h3 class="church-name">Templo de la Fe</h3>
+                    <p class="church-denomination">Iglesia Evangélica</p>
+                    <div class="church-status">
+                        <span class="status-indicator status-closed"></span>
+                        Cerrado
+                    </div>
+                </div>
+                <img src="https://images.unsplash.com/photo-1546146830-2cca9512c68e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80" alt="Templo de la Fe" class="church-image">
+                <div class="card-content">
+                    <div class="church-address">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <span>Calle Secundaria 456, Norte</span>
+                    </div>
+                    <div class="schedule-item">
+                        <span class="schedule-day">Lunes a Viernes</span>
+                        <span class="schedule-time">08:00 - 18:00</span>
+                    </div>
+                    <div class="schedule-item">
+                        <span class="schedule-day">Sábados</span>
+                        <span class="schedule-time">09:00 - 17:00</span>
+                    </div>
+                    <div class="schedule-item">
+                        <span class="schedule-day">Domingos</span>
+                        <span class="schedule-time">07:00 - 20:00</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <h2 class="section-title">Diseño Minimalista</h2>
+        <div class="cards-container">
+            <div class="card card-minimal">
+                <div class="card-header">
+                    <h3 class="church-name">Iglesia de la Esperanza</h3>
+                    <p class="church-denomination">Comunidad Pentecostal</p>
+                </div>
+                <img src="https://images.unsplash.com/photo-1481277542470-605612bd2d61?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80" alt="Iglesia de la Esperanza" class="church-image">
+                <div class="card-content">
+                    <div class="church-address">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <span>Boulevard Central 789, Este</span>
+                    </div>
+                    <div class="schedule-item">
+                        <span class="schedule-day">Lunes a Viernes</span>
+                        <span class="schedule-time">09:00 - 20:00</span>
+                    </div>
+                    <div class="schedule-item">
+                        <span class="schedule-day">Sábados</span>
+                        <span class="schedule-time">10:00 - 19:00</span>
+                    </div>
+                    <div class="schedule-item">
+                        <span class="schedule-day">Domingos</span>
+                        <span class="schedule-time">08:00 - 22:00</span>
+                    </div>
+                    <div class="church-status" style="margin-top: 15px;">
+                        <span class="status-indicator status-soon"></span>
+                        Abriendo pronto
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <h2 class="section-title">Diseño con Imagen Destacada</h2>
+        <div class="cards-container">
+            <div class="card card-featured">
+                <img src="https://images.unsplash.com/photo-1519167758481-83f550bb49b3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80" alt="Capilla del Perdón" class="church-image">
+                <div class="card-header">
+                    <h3 class="church-name">Capilla del Perdón</h3>
+                    <p class="church-denomination">Iglesia Católica</p>
+                </div>
+                <div class="card-content">
+                    <div class="church-address">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <span>Plaza Mayor 321, Sur</span>
+                    </div>
+                    <div class="schedule-item">
+                        <span class="schedule-day">Lunes a Viernes</span>
+                        <span class="schedule-time">06:30 - 21:00</span>
+                    </div>
+                    <div class="schedule-item">
+                        <span class="schedule-day">Sábados</span>
+                        <span class="schedule-time">07:00 - 20:00</span>
+                    </div>
+                    <div class="schedule-item">
+                        <span class="schedule-day">Domingos</span>
+                        <span class="schedule-time">05:30 - 22:00</span>
+                    </div>
+                    <div class="church-status" style="margin-top: 15px;">
+                        <span class="status-indicator status-open"></span>
+                        Abierto ahora
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <h2 class="section-title">Diseño con Pestañas</h2>
+        <div class="cards-container">
+            <div class="card card-tabs">
+                <div class="card-header">
+                    <div class="tab active" data-tab="info">Información</div>
+                    <div class="tab" data-tab="schedule">Horarios</div>
+                    <div class="tab" data-tab="contact">Contacto</div>
+                </div>
+                <div class="tab-content active" id="info">
+                    <h3 class="church-name">Centro Cristiano Vida Nueva</h3>
+                    <p class="church-denomination">Iglesia Evangélica</p>
+                    <div class="church-address">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <span>Av. Libertad 654, Oeste</span>
+                    </div>
+                    <p style="margin-top: 15px;">Una comunidad cristiana comprometida con el servicio y la fe. Ofrecemos programas para todas las edades y grupos de estudio bíblico.</p>
+                </div>
+                <div class="tab-content" id="schedule">
+                    <h3>Horarios de Servicios</h3>
+                    <div class="schedule-item">
+                        <span class="schedule-day">Lunes a Viernes</span>
+                        <span class="schedule-time">10:00 - 22:00</span>
+                    </div>
+                    <div class="schedule-item">
+                        <span class="schedule-day">Sábados</span>
+                        <span class="schedule-time">09:00 - 21:00</span>
+                    </div>
+                    <div class="schedule-item">
+                        <span class="schedule-day">Domingos</span>
+                        <span class="schedule-time">07:00 - 23:00</span>
+                    </div>
+                </div>
+                <div class="tab-content" id="contact">
+                    <h3>Información de Contacto</h3>
+                    <p><i class="fas fa-phone"></i> (123) 456-7890</p>
+                    <p><i class="fas fa-envelope"></i> info@vidanueva.org</p>
+                    <p><i class="fas fa-globe"></i> www.vidanueva.org</p>
+                    <div class="church-status" style="margin-top: 15px;">
+                        <span class="status-indicator status-open"></span>
+                        Abierto ahora
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <h2 class="section-title">Diseño con Estadísticas</h2>
+        <div class="cards-container">
+            <div class="card card-stats">
+                <div class="card-header">
+                    <h3 class="church-name">Santuario del Rosario</h3>
+                    <p class="church-denomination">Iglesia Católica</p>
+                    <div class="church-stats">
+                        <div class="stat">
+                            <div class="stat-value">350</div>
+                            <div class="stat-label">Capacidad</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-value">5</div>
+                            <div class="stat-label">Servicios</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-value">1852</div>
+                            <div class="stat-label">Fundación</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-content">
+                    <div class="church-address">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <span>Callejón San Pedro 987, Centro Histórico</span>
+                    </div>
+                    <div class="schedule-item">
+                        <span class="schedule-day">Lunes a Viernes</span>
+                        <span class="schedule-time">08:00 - 20:00</span>
+                    </div>
+                    <div class="schedule-item">
+                        <span class="schedule-day">Sábados</span>
+                        <span class="schedule-time">08:00 - 20:00</span>
+                    </div>
+                    <div class="schedule-item">
+                        <span class="schedule-day">Domingos</span>
+                        <span class="schedule-time">07:00 - 21:00</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <h2 class="section-title">Diseño con Mapa</h2>
+        <div class="cards-container">
+            <div class="card card-map">
+                <div class="card-header">
+                    <h3 class="church-name">Parroquia San José</h3>
+                    <p class="church-denomination">Iglesia Católica</p>
+                </div>
+                <div class="map-placeholder">
+                    <i class="fas fa-map-marked-alt"></i> Vista del mapa
+                </div>
+                <div class="card-content">
+                    <div class="church-address">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <span>Av. Central 555, Este</span>
+                    </div>
+                    <div class="schedule-item">
+                        <span class="schedule-day">Lunes a Viernes</span>
+                        <span class="schedule-time">07:30 - 19:30</span>
+                    </div>
+                    <div class="schedule-item">
+                        <span class="schedule-day">Sábados</span>
+                        <span class="schedule-time">08:30 - 18:30</span>
+                    </div>
+                    <div class="schedule-item">
+                        <span class="schedule-day">Domingos</span>
+                        <span class="schedule-time">07:00 - 20:30</span>
+                    </div>
+                    <div class="church-status" style="margin-top: 15px;">
+                        <span class="status-indicator status-closed"></span>
+                        Cerrado
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <h2 class="section-title">Diseño con Botones de Acción</h2>
+        <div class="cards-container">
+            <div class="card card-actions">
+                <div class="card-header">
+                    <h3 class="church-name">Comunidad de Fe</h3>
+                    <p class="church-denomination">Iglesia Evangélica</p>
+                </div>
+                <div class="card-content">
+                    <div class="church-address">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <span>Calle Esperanza 222, Norte</span>
+                    </div>
+                    <div class="schedule-item">
+                        <span class="schedule-day">Lunes a Viernes</span>
+                        <span class="schedule-time">09:00 - 18:00</span>
+                    </div>
+                    <div class="schedule-item">
+                        <span class="schedule-day">Sábados</span>
+                        <span class="schedule-time">10:00 - 16:00</span>
+                    </div>
+                    <div class="schedule-item">
+                        <span class="schedule-day">Domingos</span>
+                        <span class="schedule-time">08:00 - 20:00</span>
+                    </div>
+                    <div class="action-buttons">
+                        <button class="btn btn-primary">Ver Detalles</button>
+                        <button class="btn btn-outline">Llamar</button>
+                        <button class="btn btn-outline">Compartir</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <h2 class="section-title">Diseño Horizontal</h2>
+        <div class="cards-container">
+            <div class="card card-horizontal">
+                <div class="image-container">
+                    <img src="https://images.unsplash.com/photo-1603386329225-868f9b1ee6c9?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80" alt="Basílica del Sagrado Corazón" class="church-image">
+                </div>
+                <div class="card-content">
+                    <div>
+                        <h3 class="church-name">Basílica del Sagrado Corazón</h3>
+                        <p class="church-denomination">Iglesia Católica</p>
+                        <div class="church-address">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <span>Plaza de la Fe 888, Centro</span>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="schedule-item">
+                            <span class="schedule-day">Lunes a Viernes</span>
+                            <span class="schedule-time">07:00 - 20:00</span>
+                        </div>
+                        <div class="schedule-item">
+                            <span class="schedule-day">Sábados</span>
+                            <span class="schedule-time">08:00 - 19:00</span>
+                        </div>
+                        <div class="schedule-item">
+                            <span class="schedule-day">Domingos</span>
+                            <span class="schedule-time">06:30 - 21:30</span>
+                        </div>
+                        <div class="church-status" style="margin-top: 10px;">
+                            <span class="status-indicator status-soon"></span>
+                            Abriendo pronto
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <h2 class="section-title">Diseño con Calificación</h2>
+        <div class="cards-container">
+            <div class="card card-rating">
+                <div class="card-header">
+                    <h3 class="church-name">Templo de la Redención</h3>
+                    <p class="church-denomination">Iglesia Evangélica</p>
+                    <div class="rating">
+                        <i class="fas fa-star"></i> 4.8
+                    </div>
+                </div>
+                <div class="card-content">
+                    <div class="church-address">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <span>Av. de la Paz 777, Oeste</span>
+                    </div>
+                    <div class="schedule-item">
+                        <span class="schedule-day">Lunes a Viernes</span>
+                        <span class="schedule-time">08:30 - 19:30</span>
+                    </div>
+                    <div class="schedule-item">
+                        <span class="schedule-day">Sábados</span>
+                        <span class="schedule-time">09:30 - 18:30</span>
+                    </div>
+                    <div class="schedule-item">
+                        <span class="schedule-day">Domingos</span>
+                        <span class="schedule-time">07:30 - 21:00</span>
+                    </div>
+                    <div class="reviews">
+                        <i class="fas fa-comment"></i> 128 reseñas
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <footer>
+        <p>Diseños de tarjetas para iglesias - Puedes usar cualquiera de estos diseños en tu proyecto</p>
+    </footer>
+
+    <script>
+        // Funcionalidad para las pestañas
+        document.addEventListener('DOMContentLoaded', function() {
+            const tabs = document.querySelectorAll('.tab');
+            
+            tabs.forEach(tab => {
+                tab.addEventListener('click', function() {
+                    const tabId = this.getAttribute('data-tab');
+                    
+                    // Remover clase active de todas las pestañas y contenidos
+                    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                    document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+                    
+                    // Agregar clase active a la pestaña y contenido seleccionados
+                    this.classList.add('active');
+                    document.getElementById(tabId).classList.add('active');
+                });
+            });
+        });
+    </script>
+</body>
+</html>

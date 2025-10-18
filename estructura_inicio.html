@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mapa Interactivo – Acceso</title>
+
+<style>
+  :root {
+    --azul-principal: #0f2b5b;
+    --azul-secundario: #1d3d7a;
+    --dorado: #d6a01d;
+    --gris-claro: #f8fafc;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
+
+  body {
+    background: linear-gradient(135deg, var(--azul-principal), var(--azul-secundario));
+    color: white;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    text-align: center;
+    overflow: hidden;
+  }
+
+  h1 {
+    font-size: 2.3rem;
+    font-weight: 700;
+    margin-bottom: 0.6rem;
+    letter-spacing: 0.5px;
+  }
+
+  p {
+    font-size: 1rem;
+    opacity: 0.9;
+    margin-bottom: 2rem;
+  }
+
+  .card {
+    background: white;
+    color: var(--azul-principal);
+    padding: 2rem 2.5rem;
+    border-radius: 16px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+    max-width: 420px;
+    width: 90%;
+    animation: fadeIn 1s ease;
+  }
+
+  .btn {
+    background: var(--dorado);
+    color: #fff;
+    border: none;
+    border-radius: 12px;
+    font-size: 1rem;
+    font-weight: 600;
+    padding: 12px 24px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+  }
+
+  .btn:hover {
+    background: #e4b11d;
+    transform: translateY(-2px);
+  }
+
+  .logo {
+    width: 90px;
+    height: 90px;
+    margin-bottom: 1rem;
+    border-radius: 50%;
+    background: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+
+  .logo img {
+    width: 70%;
+  }
+
+  footer {
+    position: absolute;
+    bottom: 15px;
+    font-size: 0.85rem;
+    opacity: 0.8;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+</style>
+</head>
+<body>
+
+  <div class="card">
+    <div class="logo">
+      <img src="assets/img/logo-iep.png" alt="Logo IEP">
+    </div>
+    <h1>Mapa Interactivo – Iglesia</h1>
+    <p>Explora el plano detallado del recinto. Selecciona el piso, haz zoom y recorre las áreas de la iglesia.</p>
+
+    <button class="btn" onclick="window.location.href='estructura.html'">
+      Entrar al Mapa
+    </button>
+  </div>
+
+  <footer>© 2025 IEP Alto Hospicio – Área Técnica</footer>
+
+</body>
+</html>
